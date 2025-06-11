@@ -1,0 +1,56 @@
+/*
+Theme Name: Maxoliv
+Theme URI: https://yourportfolio.com
+Author: Olufemi Oshin
+Author URI: https://yourwebsite.com
+Description: Modern portfolio theme
+Version: 1.0
+License: GPLv2
+Text Domain: maxoliv
+*/
+
+
+
+/* CSS Variables */
+:root {
+    --theme-bg-color: #121212;
+    --theme-text-color: #ffffff;
+    --theme-border-color: #fd8e8e;
+}
+
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* body {
+    background-color: #121212;
+    color: white;
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+} */
+
+/* Basic layout structure */
+body {
+    background-color: var(--theme-bg-color);
+    color: var(--theme-text-color);
+    overflow-y: visible;
+    overflow-x: hidden;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+html,
+body {
+    height: 100%;
+}
