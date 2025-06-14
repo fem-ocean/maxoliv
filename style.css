@@ -1,8 +1,8 @@
 /*
 Theme Name: Maxoliv
-Theme URI: https://yourportfolio.com
+Theme URI: https://maxoliv.com
 Author: Olufemi Oshin
-Author URI: https://yourwebsite.com
+Author URI: https://olufemioshin.com
 Description: Modern portfolio theme
 Version: 1.0
 License: GPLv2
@@ -16,6 +16,23 @@ Text Domain: maxoliv
     --theme-bg-color: #121212;
     --theme-text-color: #ffffff;
     --theme-border-color: #fd8e8e;
+    --theme-primary: #fd8e8e;
+    --theme-secondary: #2e304b;
+    --theme-text: #121212;
+}
+
+
+
+.theme-dark {
+    --theme-primary: #fde58e;
+    --theme-secondary: #1a1a2e;
+    --theme-text: #ffffff;
+}
+
+.theme-blue {
+    --theme-primary: #8efdb0;
+    --theme-secondary: #0f3460;
+    --theme-text: #121212;
 }
 
 
@@ -39,10 +56,11 @@ Text Domain: maxoliv
 body {
     background-color: var(--theme-bg-color);
     color: var(--theme-text-color);
-    overflow-y: visible;
+    overflow-y: hidden;
     overflow-x: hidden;
     height: 100%;
     font-family: 'Poppins', sans-serif;
+    border: 4px solid red;
 }
 
 a {
@@ -53,4 +71,12 @@ a {
 html,
 body {
     height: 100%;
+}
+
+#wpadminbar {
+    display: none;
+}
+
+html {
+    margin-top: 0 !important;
 }

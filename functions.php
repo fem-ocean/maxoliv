@@ -1,175 +1,710 @@
 <?php
+/**
+ * Maxoliv Theme Functions
+ * 
+ * @package Maxoliv
+ * @since 1.0.0
+ */
 
+if (!defined('ABSPATH')) {
+    exit; // Security check
+}
 
-
-
-// Debugging: Confirm file is loaded
-add_action('init', function() {
-    error_log('Theme functions.php loaded');
-});
-
-add_action('wp_head', function() {
-    echo '<!-- Theme is active -->';
-});
-
-add_action('wp_head', function() {
-    echo '<!-- Template directory: ' . get_template_directory() . ' -->';
-    echo '<!-- Stylesheet URI: ' . get_stylesheet_uri() . ' -->';
-});
-
-function maxoliv_styles() {
-    // Debugging: Confirm function is called
-    error_log('maxoliv_styles() function executing');
+/**
+ * Theme Setup
+ */
+function maxoliv_setup() {
+    // Make theme available for translation
+    load_theme_textdomain('maxoliv', get_template_directory() . '/languages');
     
-    // Get current theme version from style.css
+    // Add default posts and comments RSS feed links to head
+    add_theme_support('automatic-feed-links');
+    
+    // Let WordPress manage the document title
+    add_theme_support('title-tag');
+    
+    // Enable support for Post Thumbnails
+    add_theme_support('post-thumbnails');
+    
+    // Enable selective refresh for widgets
+    add_theme_support('customize-selective-refresh-widgets');
+    
+    // Register navigation menus
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'maxoliv'),
+    ));
+}
+add_action('after_setup_theme', 'maxoliv_setup');
+
+/**
+ * Enqueue Theme Assets
+ */
+function maxoliv_assets() {
     $theme_version = wp_get_theme()->get('Version');
     
-    
-    // 1. Main stylesheet (style.css) - required for theme metadata
+    // Main stylesheet
     wp_enqueue_style(
-        'maxoliv-core', // More semantic handle
+        'maxoliv-style',
         get_stylesheet_uri(),
-        array(), // No dependencies
+        array(),
         $theme_version
     );
-
-    // 2. Custom CSS - conditionally load with cache-busting
+    
+    // Custom CSS
     $custom_css_path = '/assets/css/main.css';
-    $custom_css_uri = get_template_directory_uri() . $custom_css_path;
-    $custom_css_ver = filemtime(get_template_directory() . $custom_css_path);
-
     if (file_exists(get_template_directory() . $custom_css_path)) {
         wp_enqueue_style(
-            'maxoliv-custom', // Consistent naming
-            $custom_css_uri,
-            array('maxoliv-core'), // Depends on core styles
-            $custom_css_ver // File modification time for cache busting
+            'maxoliv-main-style',
+            get_template_directory_uri() . $custom_css_path,
+            array('maxoliv-style'),
+            filemtime(get_template_directory() . $custom_css_path)
         );
-        
-        // Debugging (only in development)
-        if (WP_DEBUG) {
-            error_log('[Theme] Custom CSS loaded: ' . $custom_css_uri);
-        }
-    } elseif (WP_DEBUG) {
-        error_log('[Theme] Custom CSS not found: ' . $custom_css_path);
     }
-
-    // 3. Google Fonts
+    
+    // Google Fonts
     wp_enqueue_style(
-        'maxoliv-google-fonts',
+        'maxoliv-poppins-font',
         'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
         array(),
         null
     );
-
-
-
-}
-add_action('wp_enqueue_scripts', 'maxoliv_styles', 10);
     
-
-
-add_action('wp_footer', function() {
-    echo '<div style="position:fixed; bottom:10px; right:10px; background:green; color:white; padding:5px; z-index:9999;">
-            Global CSS Loaded ✔️
-          </div>';
-});
-
-
-// Basic theme support
-add_theme_support('title-tag');
-add_theme_support('post-thumbnails');
-
-
-
-// Add mobile detection
-function wp_is_mobile_viewport() {
-    // Check if we're in a customizer preview
-    if (is_customize_preview()) {
-        return false;
-    }
-    
-    // Check the actual viewport width
-    return (isset($_SERVER['HTTP_USER_AGENT']) && 
-           preg_match('/\b(Android|iPhone|iPad|iPod|Windows Phone)\b/i', $_SERVER['HTTP_USER_AGENT']));
-}
-
-
-
-function maxoliv_scripts() {
-    // ... existing styles ...
-    
-    // Main body interactions
+    // Main JavaScript
     wp_enqueue_script(
-        'main-body-js',
-        get_template_directory_uri() . '/assets/js/main-body.js',
-        array('jquery'),
-        filemtime(get_template_directory() . '/assets/js/main-body.js'),
+        'maxoliv-main-js',
+        get_template_directory_uri() . '/assets/js/main.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/main.js'),
         true
     );
-    
-    // Localize script data if needed
-    wp_localize_script('main-body-js', 'portfolioData', array(
-        'isMobile' => wp_is_mobile() || wp_is_mobile_viewport()
-    ));
 }
+add_action('wp_enqueue_scripts', 'maxoliv_assets');
 
-
-
-
-
-
-// Add background image control to Customizer
-function maxoliv_customize_register($wp_customize) {
-    // Background Image Setting
-    $wp_customize->add_setting('rightpanel_background_image', array(
-        'default' => get_template_directory_uri() . '/assets/images/mypicsedited2.jpg',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'esc_url_raw'
+/**
+ * Customizer Settings******confirm this part - why is left panel small compared to right panel. And also controls*********************************************************
+ */
+function maxoliv_left_panel_customize_register($wp_customize) {
+    
+    
+    
+    // Left Panel Settings
+    $wp_customize->add_section('maxoliv_left_panel', array(
+        'title'    => __('Left Panel Settings', 'maxoliv'),
+        'priority' => 35,
     ));
     
-    $wp_customize->add_control(new WP_Customize_Image_Control(
-        $wp_customize,
-        'rightpanel_background_image_control',
-        array(
-            'label' => __('Right Panel Background', 'yourthemetextdomain'),
-            'description' => __('Recommended size: 1920x1080px', 'yourthemetextdomain'),
-            'section' => 'colors',
-            'settings' => 'rightpanel_background_image'
-        )
-    ));
-    
-    // Overlay Color Setting
-    $wp_customize->add_setting('rightpanel_overlay_color', array(
-        'default' => 'rgba(253, 142, 142, 0.3)',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ));
-    
-    $wp_customize->add_control(new WP_Customize_Color_Control(
-        $wp_customize,
-        'rightpanel_overlay_color_control',
-        array(
-            'label' => __('Overlay Color', 'yourthemetextdomain'),
-            'section' => 'colors',
-            'settings' => 'rightpanel_overlay_color'
-        )
-    ));
+    // Add your left panel controls here...
+    // (Keep your existing left panel controls but update text domain to 'maxoliv')
 }
-add_action('customize_register', 'maxoliv_customize_register');
+add_action('customize_register', 'maxoliv_left_panel_customize_register');
 
-// Enqueue dynamic CSS
+/**
+ * Output Dynamic CSS
+ */
 function maxoliv_dynamic_css() {
-    $bg_image = esc_url(get_theme_mod('rightpanel_background_image', get_template_directory_uri() . '/assets/images/mypicsedited2.jpg'));
-    $overlay_color = esc_attr(get_theme_mod('rightpanel_overlay_color', 'rgba(253, 142, 142, 0.3)'));
     ?>
     <style type="text/css">
+        /* Right Panel Background */
         .background-layer {
-            background: url('<?php echo $bg_image; ?>') no-repeat center center/cover;
+            background-image: url('<?php echo esc_url(get_theme_mod('rightpanel_background_image', get_template_directory_uri() . '/assets/images/mypicsedited2.jpg')); ?>');
         }
+        
+        /* Right Panel Overlay */
         .overlay {
-            background-color: <?php echo $overlay_color; ?>;
+            background-color: <?php echo esc_attr(get_theme_mod('rightpanel_overlay_color', 'rgba(253, 142, 142, 0.3)')); ?>;
         }
     </style>
     <?php
 }
 add_action('wp_head', 'maxoliv_dynamic_css');
+
+/**
+ * Debugging Helpers (Remove in production)
+ */
+if (WP_DEBUG) {
+    add_action('wp_head', function() {
+        echo '<!-- Maxoliv Theme Active -->';
+    });
+    
+    add_action('init', function() {
+        error_log('Maxoliv Theme Initialized');
+    });
+}
+
+
+
+
+// Add to your existing customizer function
+function maxoliv_burger_menu_customize_register($wp_customize) {
+    // Burger Menu Section
+    $wp_customize->add_section('maxoliv_burger_menu', array(
+        'title'    => __('Burger Menu Settings', 'maxoliv'),
+        'priority' => 40,
+    ));
+    
+    // Circle Color
+    $wp_customize->add_setting('burger_circle_color', array(
+        'default'           => '#fd8e8e',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'burger_circle_color_control',
+        array(
+            'label'    => __('Circle Color', 'maxoliv'),
+            'section'  => 'maxoliv_burger_menu',
+            'settings' => 'burger_circle_color'
+        )
+    ));
+    
+    // Menu Items
+    $menu_items = array(
+        'about' => array(
+            'title' => __('About', 'maxoliv'),
+            'desc'  => __('Delicately tender with a slice of cheese', 'maxoliv')
+        ),
+        'certifications' => array(
+            'title' => __('Certifications', 'maxoliv'),
+            'desc'  => __('Recognition from the best institutions', 'maxoliv')
+        ),
+        'references' => array(
+            'title' => __('References', 'maxoliv'),
+            'desc'  => __('Hear what our happy says', 'maxoliv')
+        ),
+        'projects' => array(
+            'title' => __('Projects', 'maxoliv'),
+            'desc'  => __('Served on a bed of fullstack tech', 'maxoliv')
+        ),
+        'contact' => array(
+            'title' => __('Contact', 'maxoliv'),
+            'desc'  => __('A superb choice to finish the day', 'maxoliv')
+        ),
+        
+    );
+    
+    foreach ($menu_items as $key => $item) {
+        // Title
+        $wp_customize->add_setting('menu_item_' . $key . '_title', array(
+            'default'           => $item['title'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage'
+        ));
+        
+        $wp_customize->add_control('menu_item_' . $key . '_title_control', array(
+            'label'    => sprintf(__('%s Title', 'maxoliv'), ucfirst($key)),
+            'section'  => 'maxoliv_burger_menu',
+            'settings' => 'menu_item_' . $key . '_title',
+            'type'     => 'text'
+        ));
+        
+        // Description
+        $wp_customize->add_setting('menu_item_' . $key . '_desc', array(
+            'default'           => $item['desc'],
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport'         => 'postMessage'
+        ));
+        
+        $wp_customize->add_control('menu_item_' . $key . '_desc_control', array(
+            'label'    => sprintf(__('%s Description', 'maxoliv'), ucfirst($key)),
+            'section'  => 'maxoliv_burger_menu',
+            'settings' => 'menu_item_' . $key . '_desc',
+            'type'     => 'text'
+        ));
+    }
+    
+    // Enqueue Burger Menu JS
+    $wp_customize->selective_refresh->add_partial('burger_menu_partial', array(
+        'selector'        => '.burger-menu-wrapper',
+        'settings'        => array_keys($wp_customize->settings()),
+        'render_callback' => function() {
+            get_template_part('template-parts/burger-menu');
+        }
+    ));
+
+    
+
+
+}
+add_action('customize_register', 'maxoliv_burger_menu_customize_register');
+
+
+// Enqueue Burger Menu JS
+function maxoliv_enqueue_burger_menu_js() {
+    wp_enqueue_script(
+        'maxoliv-burger-menu',
+        get_template_directory_uri() . '/assets/js/burger-menu.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/burger-menu.js'),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_burger_menu_js');
+
+
+
+
+
+/**
+ * Add Theme Switcher Customizer Settings
+ */// Add to your existing customizer function
+function maxoliv_theme_switcher_customize_register($wp_customize) {
+    // Theme Switcher Section
+    $wp_customize->add_section('maxoliv_theme_switcher', array(
+        'title'    => __('Theme Switcher', 'maxoliv'),
+        'priority' => 45,
+    ));
+    
+    // Light Theme Color
+    $wp_customize->add_setting('theme_switcher_light_color', array(
+        'default'           => '#fd8e8e',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'theme_switcher_light_color_control',
+        array(
+            'label'    => __('Light Theme Color', 'maxoliv'),
+            'section'  => 'maxoliv_theme_switcher',
+            'settings' => 'theme_switcher_light_color'
+        )
+    ));
+    
+    // Dark Theme Color
+    $wp_customize->add_setting('theme_switcher_dark_color', array(
+        'default'           => '#fde58e',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'theme_switcher_dark_color_control',
+        array(
+            'label'    => __('Dark Theme Color', 'maxoliv'),
+            'section'  => 'maxoliv_theme_switcher',
+            'settings' => 'theme_switcher_dark_color'
+        )
+    ));
+    
+    // Blue Theme Color
+    $wp_customize->add_setting('theme_switcher_blue_color', array(
+        'default'           => '#8efdb0',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'theme_switcher_blue_color_control',
+        array(
+            'label'    => __('Blue Theme Color', 'maxoliv'),
+            'section'  => 'maxoliv_theme_switcher',
+            'settings' => 'theme_switcher_blue_color'
+        )
+    ));
+    
+    // Selective Refresh
+    $wp_customize->selective_refresh->add_partial('theme_switcher_partial', array(
+        'selector'        => '.theme-switcher',
+        'settings'        => array(
+            'theme_switcher_light_color',
+            'theme_switcher_dark_color',
+            'theme_switcher_blue_color'
+        ),
+        'render_callback' => function() {
+            ob_start();
+            get_template_part('template-parts/theme-switcher');
+            return ob_get_clean();
+        }
+    ));
+}
+add_action('customize_register', 'maxoliv_theme_switcher_customize_register');
+
+// Enqueue Theme Switcher JS
+function maxoliv_enqueue_theme_switcher_js() {
+    wp_enqueue_script(
+        'maxoliv-theme-switcher',
+        get_template_directory_uri() . '/assets/js/theme-switcher.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/theme-switcher.js'),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_theme_switcher_js');
+
+
+
+// Add theme class to body
+function maxoliv_body_class_theme($classes) {
+    $current_theme = !empty($_COOKIE['maxoliv-theme']) ? sanitize_text_field($_COOKIE['maxoliv-theme']) : 'light';
+    $classes[] = 'theme-' . $current_theme;
+    return $classes;
+}
+add_filter('body_class', 'maxoliv_body_class_theme');
+
+
+
+
+
+
+
+
+// Right Panel Customizer Settings
+function maxoliv_right_panel_customize_register($wp_customize) {
+    // Right Panel Section Settings
+    $wp_customize->add_section('maxoliv_right_panel', array(
+        'title'    => __('Right Panel Settings', 'maxoliv'),
+        'priority' => 30,
+    ));
+    
+    // Background Image
+    $wp_customize->add_setting('right_panel_background_image', array(
+        'default'           => get_template_directory_uri() . '/assets/images/mypicsedited2.jpg',
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'esc_url_raw'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control(
+        $wp_customize,
+        'right_panel_background_image_control',
+        array(
+            'label'       => __('Background Image', 'maxoliv'),
+            'description' => __('Recommended size: 1920x1080px', 'maxoliv'),
+            'section'     => 'maxoliv_right_panel',
+            'settings'    => 'right_panel_background_image'
+        )
+    ));
+    
+    // Overlay Color
+    $wp_customize->add_setting('right_panel_overlay_color', array(
+        'default'           => 'rgba(253, 142, 142, 0.3)',
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'right_panel_overlay_color_control',
+        array(
+            'label'    => __('Overlay Color', 'maxoliv'),
+            'section'  => 'maxoliv_right_panel',
+            'settings' => 'right_panel_overlay_color'
+        )
+    ));
+    
+    // Section Toggles
+    $sections = array(
+        'about' => __('About Section', 'maxoliv'),
+        'certifications' => __('Certifications Section', 'maxoliv'),
+        'references' => __('Reference Section', 'maxoliv'),
+        'projects' => __('Projects Section', 'maxoliv'),
+        'contact' => __('Contact Section', 'maxoliv')
+    );
+    
+    foreach ($sections as $key => $label) {
+        $wp_customize->add_setting('display_' . $key . '_section', array(
+            'default'           => true,
+            'transport'         => 'refresh',
+            'sanitize_callback' => 'maxoliv_sanitize_checkbox'
+        ));
+        
+        $wp_customize->add_control('display_' . $key . '_section_control', array(
+            'label'    => $label,
+            'section'  => 'maxoliv_right_panel',
+            'settings' => 'display_' . $key . '_section',
+            'type'     => 'checkbox'
+        ));
+    }
+    
+    // About Section Content
+    $wp_customize->add_setting('about_section_title', array(
+        'default'           => __('About Me', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    
+    $wp_customize->add_control('about_section_title_control', array(
+        'label'    => __('About Section Title', 'maxoliv'),
+        'section'  => 'maxoliv_right_panel',
+        'settings' => 'about_section_title',
+        'type'     => 'text'
+    ));
+    
+    $wp_customize->add_setting('about_section_content', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Code_Editor_Control(
+        $wp_customize,
+        'about_section_content_control',
+        array(
+            'label'    => __('About Section Content', 'maxoliv'),
+            'section'  => 'maxoliv_right_panel',
+            'settings' => 'about_section_content',
+            'code_type' => 'text/html'
+        )
+    ));
+
+
+
+    // Certifications Section Content
+    $wp_customize->add_setting('certifications_section_title', array(
+        'default'           => __('Certifications', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    
+    $wp_customize->add_control('certifications_section_title_control', array(
+        'label'    => __('Certifications Section Title', 'maxoliv'),
+        'section'  => 'maxoliv_right_panel',
+        'settings' => 'certifications_section_title',
+        'type'     => 'text'
+    ));
+    
+    $wp_customize->add_setting('certifications_section_content', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Code_Editor_Control(
+        $wp_customize,
+        'certifications_section_content_control',
+        array(
+            'label'    => __('Certifications Section Content', 'maxoliv'),
+            'section'  => 'maxoliv_right_panel',
+            'settings' => 'certifications_section_content',
+            'code_type' => 'text/html'
+        )
+    ));
+
+
+    // References Section Content
+    $wp_customize->add_setting('references_section_title', array(
+        'default'           => __('References', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    
+    $wp_customize->add_control('references_section_title_control', array(
+        'label'    => __('References Section Title', 'maxoliv'),
+        'section'  => 'maxoliv_right_panel',
+        'settings' => 'references_section_title',
+        'type'     => 'text'
+    ));
+    
+    $wp_customize->add_setting('references_section_content', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Code_Editor_Control(
+        $wp_customize,
+        'references_section_content_control',
+        array(
+            'label'    => __('References Section Content', 'maxoliv'),
+            'section'  => 'maxoliv_right_panel',
+            'settings' => 'references_section_content',
+            'code_type' => 'text/html'
+        )
+    ));
+
+
+
+    // Projects Section Content
+    $wp_customize->add_setting('projects_section_title', array(
+        'default'           => __('Projects', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    
+    $wp_customize->add_control('projects_section_title_control', array(
+        'label'    => __('Projects Section Title', 'maxoliv'),
+        'section'  => 'maxoliv_right_panel',
+        'settings' => 'projects_section_title',
+        'type'     => 'text'
+    ));
+    
+    $wp_customize->add_setting('projects_section_content', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Code_Editor_Control(
+        $wp_customize,
+        'projects_section_content_control',
+        array(
+            'label'    => __('Projects Section Content', 'maxoliv'),
+            'section'  => 'maxoliv_right_panel',
+            'settings' => 'projects_section_content',
+            'code_type' => 'text/html'
+        )
+    ));
+    
+
+
+    // Contact Section Content
+    $wp_customize->add_setting('contact_section_title', array(
+        'default'           => __('Contact', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    
+    $wp_customize->add_control('contact_section_title_control', array(
+        'label'    => __('Contact Section Title', 'maxoliv'),
+        'section'  => 'maxoliv_right_panel',
+        'settings' => 'contact_section_title',
+        'type'     => 'text'
+    ));
+    
+    $wp_customize->add_setting('contact_section_content', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Code_Editor_Control(
+        $wp_customize,
+        'contact_section_content_control',
+        array(
+            'label'    => __('Contact Section Content', 'maxoliv'),
+            'section'  => 'maxoliv_right_panel',
+            'settings' => 'contact_section_content',
+            'code_type' => 'text/html'
+        )
+    ));
+    // Add similar controls for other sections...
+    
+    
+    
+    
+    
+    
+    
+    // Selective Refresh
+    $wp_customize->selective_refresh->add_partial('right_panel_partial', array(
+        'selector'        => '.right-panel-container',
+        'settings'        => array(
+            'right_panel_background_image',
+            'right_panel_overlay_color',
+            'about_section_title',
+            'about_section_content'
+            // Add other settings
+        ),
+        'render_callback' => function() {
+            get_template_part('right-panel');
+        }
+    ));
+}
+add_action('customize_register', 'maxoliv_right_panel_customize_register');
+
+// Sanitize checkbox
+function maxoliv_sanitize_checkbox($input) {
+    return (isset($input) && true === $input) ? true : false;
+}
+
+// ********************Check here array(jquery)
+// Enqueue right panel JS
+// function maxoliv_right_panel_scripts() {
+//     wp_enqueue_script(
+//         'maxoliv-right-panel',
+//         get_template_directory_uri() . '/assets/js/right-panel.js',
+//         array('jquery'),
+//         filemtime(get_template_directory() . '/assets/js/right-panel.js'),
+//         true
+//     );
+// }
+// add_action('wp_enqueue_scripts', 'maxoliv_right_panel_scripts');
+
+
+
+
+
+
+// About Section Customizer Settings
+function maxoliv_about_customizer($wp_customize) {
+    // About Section Panel
+    $wp_customize->add_section('maxoliv_about_section', array(
+        'title'    => __('About Section', 'maxoliv'),
+        'priority' => 30,
+    ));
+
+    // Section Title
+    $wp_customize->add_setting('about_section_title', array(
+        'default'           => __('About Me', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field'
+    ));
+    
+    $wp_customize->add_control('about_section_title_control', array(
+        'label'    => __('Section Title', 'maxoliv'),
+        'section'  => 'maxoliv_about_section',
+        'settings' => 'about_section_title',
+        'type'     => 'text'
+    ));
+
+    // Intro Text
+    $wp_customize->add_setting('about_intro_text', array(
+        'default'           => __('I\'m a PMP-certified Project Manager, Business Analyst, and Harvard-certified Web & Software Developer...', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control('about_intro_text_control', array(
+        'label'    => __('Introduction Text', 'maxoliv'),
+        'section'  => 'maxoliv_about_section',
+        'settings' => 'about_intro_text',
+        'type'     => 'textarea'
+    ));
+
+    // Technical Text
+    $wp_customize->add_setting('about_technical_text', array(
+        'default'           => __('I wear many hats:<br>Business Analyst — Eliciting requirements...', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control('about_technical_text_control', array(
+        'label'    => __('Technical Text', 'maxoliv'),
+        'section'  => 'maxoliv_about_section',
+        'settings' => 'about_technical_text',
+        'type'     => 'textarea'
+    ));
+
+    // Personal Text
+    $wp_customize->add_setting('about_personal_text', array(
+        'default'           => __('Outside of work, I\'m a family-first person...', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ));
+    
+    $wp_customize->add_control('about_personal_text_control', array(
+        'label'    => __('Personal Text', 'maxoliv'),
+        'section'  => 'maxoliv_about_section',
+        'settings' => 'about_personal_text',
+        'type'     => 'textarea'
+    ));
+
+    // Selective Refresh
+    $wp_customize->selective_refresh->add_partial('about_section_partial', array(
+        'selector'        => '#about-section',
+        'settings'        => array(
+            'about_section_title',
+            'about_intro_text',
+            'about_technical_text',
+            'about_personal_text'
+        ),
+        'render_callback' => function() {
+            get_template_part('template-parts/sections/about');
+        }
+    ));
+}
+add_action('customize_register', 'maxoliv_about_customizer');
