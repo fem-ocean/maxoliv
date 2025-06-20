@@ -324,6 +324,10 @@ function maxoliv_theme_switcher_customize_register($wp_customize) {
 }
 add_action('customize_register', 'maxoliv_theme_switcher_customize_register');
 
+
+
+
+// **********************************************************************
 // Enqueue Theme Switcher JS
 function maxoliv_enqueue_theme_switcher_js() {
     wp_enqueue_script(
@@ -585,10 +589,6 @@ function maxoliv_right_panel_customize_register($wp_customize) {
     
     
     
-    
-    
-    
-    
     // Selective Refresh
     $wp_customize->selective_refresh->add_partial('right_panel_partial', array(
         'selector'        => '.right-panel-container',
@@ -596,7 +596,15 @@ function maxoliv_right_panel_customize_register($wp_customize) {
             'right_panel_background_image',
             'right_panel_overlay_color',
             'about_section_title',
-            'about_section_content'
+            'about_section_content',
+            'certifications_section_title',
+            'certifications_section_content',
+            'references_section_title',
+            'references_section_content',
+            'projects_section_title',
+            'projects_section_content',
+            'contact_section_title',
+            'contact_section_content'
             // Add other settings
         ),
         'render_callback' => function() {
@@ -708,3 +716,304 @@ function maxoliv_about_customizer($wp_customize) {
     ));
 }
 add_action('customize_register', 'maxoliv_about_customizer');
+
+
+
+
+/**
+ * Certifications Section Customizer Settings
+ */
+function maxoliv_certifications_customizer($wp_customize) {
+    // Certifications Section
+    $wp_customize->add_section('maxoliv_certifications', [
+        'title'    => __('Certifications', 'maxoliv'),
+        'panel'    => 'maxoliv_right_panel', // Group under Right Panel
+        'priority' => 35,
+    ]);
+
+    // Section Title
+    $wp_customize->add_setting('certifications_title', [
+        'default'           => __('Certifications & Qualifications', 'maxoliv'),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field'
+    ]);
+    
+    $wp_customize->add_control('certifications_title_control', [
+        'label'    => __('Section Title', 'maxoliv'),
+        'section'  => 'maxoliv_certifications',
+        'settings' => 'certifications_title',
+        'type'     => 'text'
+    ]);
+
+    // Certification Items (Repeater)
+    $wp_customize->add_setting('maxoliv_certifications_items', [
+        'default'           => json_encode(maxoliv_get_certifications()),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'wp_kses_post'
+    ]);
+    
+    $wp_customize->add_control('maxoliv_certifications_items_control', [
+        'label'       => __('Certification Items', 'maxoliv'),
+        'description' => __('Add/edit certifications in JSON format', 'maxoliv'),
+        'section'     => 'maxoliv_certifications',
+        'settings'    => 'maxoliv_certifications_items',
+        'type'        => 'textarea'
+    ]);
+
+    // Selective Refresh
+    $wp_customize->selective_refresh->add_partial('certifications_partial', [
+        'selector'        => '#certifications-section',
+        'settings'        => ['certifications_title', 'maxoliv_certifications_items'],
+        'render_callback' => function() {
+            get_template_part('template-parts/sections/certifications');
+        }
+    ]);
+}
+add_action('customize_register', 'maxoliv_certifications_customizer');
+
+
+/**
+ * Helper Function - Get Certifications Data
+ */
+function maxoliv_get_certifications() {
+    $default = json_encode([
+        
+        [
+            'name' => 'PMP Certification',
+            'logo' => get_template_directory_uri() . '/assets/images/pmp.png',
+            'description' => 'As a globally-recognized Project Management Professional (PMP)®, I have demonstrated the extensive knowledge and mastery of project management concepts, tasks, and techniques that are applicable across virtually any industry & methodology.',
+            'certification-link' => 'https://www.google.com'
+        ],
+        [
+            'name' => 'Professional Scrum Master',
+            'logo' => get_template_directory_uri() . '/assets/images/psm.png',
+            'description' => 'By earning the globally recognized Professional Scrum Master I (PSM I) certification I have demonstrated a fundamental level of Scrum mastery, including the concepts of applying Scrum, and proven an understanding of Scrum as described in the Scrum Guide. I have also demonstrated a consistent use of terminology and approach to Scrum.',
+            'certification-link' => 'https://www.google.com'
+        ],
+        [
+            'name' => 'Google Project Management',
+            'logo' => get_template_directory_uri() . '/assets/images/google-pm.png',
+            'description' => 'By earning the Google Project Management Certificate, I have completed six courses, developed by Google, that include hands-on, practice-based assessments and are designed to prepare me for introductory-level roles in Project Management. It made me competent in initiating, planning and running both traditional and agile projects.',
+            'certification-link' => 'https://www.google.com'
+        ],
+        [
+            'name' => 'Certificate in web programming with Python & JavaScript',
+            'logo' => get_template_directory_uri() . '/assets/images/harvardcs50.jpg',
+            'description' => 'Harvard University\'s CS50 Introduction to Computer Science.- By earning the Certificate in web programming with Python & JavaScript, I have developed a deep understanding of web development concepts and best practices. This program has equipped me with the skills to build dynamic and interactive web applications using modern programming languages and frameworks.',
+            'certification-link' => 'https://github.com'
+
+        ],
+        [
+            'name' => 'Certificate in full stack development with MERN',
+            'logo' => get_template_directory_uri() . '/assets/images/nerdyeye.png',
+            'description' => 'Comprehensive Full Stack Web Development course. - By earning the Certificate in full stack development with MERN, I have developed a deep understanding of web development concepts and best practices. This program has equipped me with the skills to build dynamic and interactive web applications using modern programming languages and frameworks.',
+            'certification-link' => 'https://github.com'
+        ],
+        [
+            'name' => 'Responsive Web Design',
+            'logo' => get_template_directory_uri() . '/assets/images/freeCodeCamp.webp',
+            'description' => 'By earning the Responsive Web Design certification from freeCodeCamp, I have developed a deep understanding of web design principles and best practices. This program has equipped me with the skills to create responsive and visually appealing websites that provide an optimal user experience across various devices.',
+            'certification-link' => 'https://github.com'
+        ],
+        [
+            'name' => 'Javascript Algorithms and Data Structures',
+            'logo' => get_template_directory_uri() . '/assets/images/freeCodeCamp.webp',
+            'description' => 'By earning the JavaScript Algorithms and Data Structures certification from freeCodeCamp, I have developed a deep understanding of algorithms and data structures in JavaScript. This program has equipped me with the skills to solve complex programming challenges and build efficient applications.',
+            'certification-link' => 'https://github.com'
+        ],
+        [
+            'name' => 'Introduction to Artificial Intelligence',
+            'logo' => get_template_directory_uri() . '/assets/images/openclassrooms.jpg',
+            'description' => 'By earning the Introduction to Artificial Intelligence certification from OpenClassrooms, I have developed a deep understanding of AI concepts and applications. This program has equipped me with the skills to build intelligent systems and leverage AI technologies effectively.',
+            'certification-link' => 'https://github.com'
+        ],
+
+
+    ]);
+
+    $items = get_theme_mod('maxoliv_certifications_items', $default);
+    $decoded = json_decode($items, true);
+
+    //Ensure each item has a link
+    foreach ($decoded as &$item) {
+        if (!isset($item['certification-link']) || empty($item['certification-link'])) {
+            $item['certification-link'] = '#'; // Default link if not set
+        }
+    }
+
+    return $decoded ? $decoded : json_decode($default, true); // Return decoded items or default if empty
+}
+
+
+
+
+
+// Debugging Output
+// This will output the certifications settings in the footer for debugging purposes
+// Remove this in production
+
+add_action('wp_footer', function() {
+    echo '<!-- Certifications Debug: ';
+    print_r([
+        'title' => get_theme_mod('certifications_title'),
+        'items' => json_decode(get_theme_mod('maxoliv_certifications_items', '[]'), true)
+    ]);
+    echo ' -->';
+});
+
+
+// Enqueue certification JS
+function maxoliv_enqueue_certifications_js() {
+    wp_enqueue_script(
+        'maxoliv-certifications',
+        get_template_directory_uri() . '/assets/js/certifications-widget.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/certifications-widget.js'),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_certifications_js');
+
+
+
+
+
+
+/**
+ * Testimonials Customizer Settings
+ */
+function maxoliv_testimonials_customizer($wp_customize) {
+    // Testimonials Section
+    $wp_customize->add_section('maxoliv_testimonials', [
+        'title'    => __('Testimonials', 'maxoliv'),
+        'priority' => 45,
+    ]);
+
+    // Background Color
+    $wp_customize->add_setting('testimonials_bg_color', [
+        'default'           => '#fd8e8e',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ]);
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'testimonials_bg_color_control',
+        [
+            'label'    => __('Background Color', 'maxoliv'),
+            'section'  => 'maxoliv_testimonials',
+            'settings' => 'testimonials_bg_color'
+        ]
+    ));
+
+    // Testimonials Repeater
+    $wp_customize->add_setting('maxoliv_testimonials_items', [
+        'default'           => json_encode([
+            [
+                'text'   => __('This is an amazing experience! The design is stunning, and the UX is smooth.', 'maxoliv'),
+                'author' => __('John Doe', 'maxoliv')
+            ],
+            [
+                'text'   => __('One of the best web experiences I\'ve had. Highly recommended!', 'maxoliv'),
+                'author' => __('Jane Smith', 'maxoliv')
+            ],
+            [
+                'text'   => __('This is an amazing experience!', 'maxoliv'),
+                'author' => __('John Doe', 'maxoliv')
+            ]
+        ]),
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'maxoliv_sanitize_testimonials'
+    ]);
+    
+    $wp_customize->add_control('maxoliv_testimonials_items_control', [
+        'label'       => __('Testimonials', 'maxoliv'),
+        'description' => __('Add testimonials in JSON format', 'maxoliv'),
+        'section'     => 'maxoliv_testimonials',
+        'settings'    => 'maxoliv_testimonials_items',
+        'type'        => 'textarea'
+    ]);
+}
+add_action('customize_register', 'maxoliv_testimonials_customizer');
+
+/**
+ * Get Testimonials Data
+ */
+function maxoliv_get_testimonials() {
+    $default = json_encode([
+        [
+            'text'   => __('This is an amazing experience! The design is stunning, and the UX is smooth.', 'maxoliv'),
+            'author' => __('John Doe', 'maxoliv')
+        ],
+        [
+            'text'   => __('One of the best web experiences I\'ve had. Highly recommended!', 'maxoliv'),
+            'author' => __('Jane Smith', 'maxoliv')
+        ],
+        [
+            'text'   => __('This is an amazing experience!', 'maxoliv'),
+            'author' => __('John Doe', 'maxoliv')
+        ]
+    ]);
+    
+    $items = get_theme_mod('maxoliv_testimonials_items', $default);
+    $decoded = json_decode($items, true);
+    
+    // Validate each testimonial
+    foreach ($decoded as &$item) {
+        $item['text'] = isset($item['text']) ? $item['text'] : '';
+        $item['author'] = isset($item['author']) ? $item['author'] : '';
+    }
+    
+    return $decoded;
+}
+
+/**
+ * Sanitize Testimonials
+ */
+function maxoliv_sanitize_testimonials($input) {
+    $decoded = json_decode($input, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        $sanitized = [];
+        foreach ($decoded as $item) {
+            $sanitized[] = [
+                'text'   => wp_kses_post($item['text'] ?? ''),
+                'author' => sanitize_text_field($item['author'] ?? '')
+            ];
+        }
+        return json_encode($sanitized);
+    }
+    return '';
+}
+
+
+/**
+ * Enqueue Testimonials Assets
+ */
+function maxoliv_enqueue_testimonials_assets() {
+    // Swiper CSS
+    wp_enqueue_style(
+        'swiper-css',
+        'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css',
+        array(),
+        '9.0.0'
+    );
+    
+    // Swiper JS
+    wp_enqueue_script(
+        'swiper-js',
+        'https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js',
+        array(),
+        '9.0.0',
+        true
+    );
+    
+    // Custom Testimonials JS
+    wp_enqueue_script(
+        'maxoliv-testimonials',
+        get_template_directory_uri() . '/assets/js/testimonials.js',
+        array('swiper-js'),
+        filemtime(get_template_directory() . '/assets/js/testimonials.js'),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_testimonials_assets');

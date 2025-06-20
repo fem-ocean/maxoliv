@@ -1,0 +1,36 @@
+<?php
+/**
+ * Testimonials Section Template
+ *
+ * @package Maxoliv
+ * @since 1.0.0
+ */
+
+if (!defined('ABSPATH')) exit;
+
+// Get testimonials from customizer
+$testimonials = maxoliv_get_testimonials();
+$bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
+?>
+
+<section id="testimonials-section" class="maxoliv-section" style="background-color: <?php echo esc_attr($bg_color); ?>">
+    <div class="testimonials-container">
+        <?php if (!empty($testimonials)) : ?>
+            <div class="swiper testimonials-swiper">
+                <div class="swiper-wrapper">
+                    <?php foreach ($testimonials as $index => $testimonial) : ?>
+                        <div class="swiper-slide">
+                            <blockquote class="testimonial-text">
+                                <?php echo wp_kses_post($testimonial['text']); ?>
+                            </blockquote>
+                            <cite class="testimonial-author"><?php echo esc_html($testimonial['author']); ?></cite>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        <?php else : ?>
+            <p class="no-testimonials"><?php esc_html_e('No testimonials found.', 'maxoliv'); ?></p>
+        <?php endif; ?>
+    </div>
+</section>

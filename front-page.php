@@ -29,14 +29,15 @@ get_header(); // Load header.php
         </div>
         <!-- Scrollable Sections -->
         <main class="scrollable-sections">
-        <div class="empty-div"></div>
+            <div class="empty-div"></div>
             <?php
             // Dynamically load sections
-            $sections = ['about', 'certifications', 'projects', 'contact'];
+            $sections = ['about', 'certifications','testimonials', 'projects', 'contact'];
             foreach ($sections as $section) {
                 get_template_part("template-parts/sections/{$section}");
             }
             ?>
+            
         </main>
     </div>
 </div>
