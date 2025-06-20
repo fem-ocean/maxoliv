@@ -1017,3 +1017,28 @@ function maxoliv_enqueue_testimonials_assets() {
     );
 }
 add_action('wp_enqueue_scripts', 'maxoliv_enqueue_testimonials_assets');
+
+
+
+
+// ******************Animations****************
+
+function maxoliv_enqueue_animations() {
+    // CSS
+    wp_enqueue_style(
+        'maxoliv-animations',
+        get_template_directory_uri() . '/assets/css/animations.css',
+        array(),
+        filemtime(get_template_directory() . '/assets/css/animations.css')
+    );
+    
+    // JS
+    wp_enqueue_script(
+        'maxoliv-animations',
+        get_template_directory_uri() . '/assets/js/animations.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/animations.js'),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_animations');
