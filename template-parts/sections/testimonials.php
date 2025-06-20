@@ -23,6 +23,29 @@ $bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
                             <blockquote class="testimonial-text">
                                 <?php echo wp_kses_post($testimonial['text']); ?>
                             </blockquote>
+
+                            <?php if (!empty($testimonial['image'])) : ?>
+                                <div class="testimonial-image-container">
+                                    <?php 
+                                    $image_id = attachment_url_to_postid($testimonial['image']);
+                                    if ($image_id) {
+                                        echo wp_get_attachment_image(
+                                            $image_id,
+                                            'thumbnail',
+                                            false,
+                                            array(
+                                                'class' => 'testimonial-author-image',
+                                                'loading' => 'lazy'
+                                            )
+                                        );
+                                    } else {
+                                        // Fallback for external URLs
+                                        echo '<img src="' . esc_url($testimonial['image']) . '" class="testimonial-author-image" alt="' . esc_attr($testimonial['author']) . '" loading="lazy">';
+                                    }
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+
                             <cite class="testimonial-author"><?php echo esc_html($testimonial['author']); ?></cite>
                         </div>
                     <?php endforeach; ?>

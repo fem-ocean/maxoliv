@@ -911,61 +911,117 @@ function maxoliv_testimonials_customizer($wp_customize) {
         'default'           => json_encode([
             [
                 'text'   => __('This is an amazing experience! The design is stunning, and the UX is smooth.', 'maxoliv'),
-                'author' => __('John Doe', 'maxoliv')
+                'author' => __('John Doe', 'maxoliv'),
+                'image' => ''
             ],
             [
                 'text'   => __('One of the best web experiences I\'ve had. Highly recommended!', 'maxoliv'),
-                'author' => __('Jane Smith', 'maxoliv')
+                'author' => __('Jane Smith', 'maxoliv'),
+                'image' => ''
             ],
             [
                 'text'   => __('This is an amazing experience!', 'maxoliv'),
-                'author' => __('John Doe', 'maxoliv')
+                'author' => __('John Doe', 'maxoliv'),
+                'image' => ''
             ]
         ]),
         'transport'         => 'postMessage',
         'sanitize_callback' => 'maxoliv_sanitize_testimonials'
     ]);
     
-    $wp_customize->add_control('maxoliv_testimonials_items_control', [
-        'label'       => __('Testimonials', 'maxoliv'),
-        'description' => __('Add testimonials in JSON format', 'maxoliv'),
-        'section'     => 'maxoliv_testimonials',
-        'settings'    => 'maxoliv_testimonials_items',
-        'type'        => 'textarea'
-    ]);
+    // $wp_customize->add_control('maxoliv_testimonials_items_control', [
+    //     'label'       => __('Testimonials', 'maxoliv'),
+    //     'description' => __('Add testimonials in JSON format', 'maxoliv'),
+    //     'section'     => 'maxoliv_testimonials',
+    //     'settings'    => 'maxoliv_testimonials_items',
+    //     'type'        => 'textarea'
+    // ]);
+
+    $wp_customize->add_control(new Maxoliv_Testimonials_Control(
+        $wp_customize,
+        'maxoliv_testimonials_items_control',
+        [
+            'label'       => __('Testimonials', 'maxoliv'),
+            'section'     => 'maxoliv_testimonials',
+            'settings'    => 'maxoliv_testimonials_items'
+        ]
+    ));
 }
 add_action('customize_register', 'maxoliv_testimonials_customizer');
 
+
+
 /**
- * Get Testimonials Data
+ * Custom Testimonials Control Class
  */
-function maxoliv_get_testimonials() {
-    $default = json_encode([
-        [
-            'text'   => __('This is an amazing experience! The design is stunning, and the UX is smooth.', 'maxoliv'),
-            'author' => __('John Doe', 'maxoliv')
-        ],
-        [
-            'text'   => __('One of the best web experiences I\'ve had. Highly recommended!', 'maxoliv'),
-            'author' => __('Jane Smith', 'maxoliv')
-        ],
-        [
-            'text'   => __('This is an amazing experience!', 'maxoliv'),
-            'author' => __('John Doe', 'maxoliv')
-        ]
-    ]);
-    
-    $items = get_theme_mod('maxoliv_testimonials_items', $default);
-    $decoded = json_decode($items, true);
-    
-    // Validate each testimonial
-    foreach ($decoded as &$item) {
-        $item['text'] = isset($item['text']) ? $item['text'] : '';
-        $item['author'] = isset($item['author']) ? $item['author'] : '';
+if (class_exists('WP_Customize_Control')) {
+    class Maxoliv_Testimonials_Control extends WP_Customize_Control {
+        public function render_content() {
+            ?>
+            <label>
+                <?php if (!empty($this->label)) : ?>
+                    <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
+                <?php endif; ?>
+                
+                <div class="maxoliv-testimonials-repeater">
+                    <div class="testimonials-container" data-repeater-list="maxoliv_testimonials_items">
+                        <?php
+                        $value = json_decode($this->value(), true);
+                        if (empty($value)) {
+                            $value = [
+                                ['text' => '', 'author' => '', 'image' => '']
+                            ];
+                        }
+                        
+                        foreach ($value as $index => $testimonial) : ?>
+                            <div class="testimonial-item" data-repeater-item>
+                                <textarea class="widefat" name="text" placeholder="<?php esc_attr_e('Testimonial text', 'maxoliv'); ?>"><?php echo esc_textarea($testimonial['text'] ?? ''); ?></textarea>
+                                
+                                <input type="text" class="widefat" name="author" placeholder="<?php esc_attr_e('Author name', 'maxoliv'); ?>" value="<?php echo esc_attr($testimonial['author'] ?? ''); ?>">
+                                
+                                <div class="testimonial-image-upload">
+                                    <div class="image-preview" style="<?php echo !empty($testimonial['image']) ? 'display:block;' : ''; ?>">
+                                        <?php if (!empty($testimonial['image'])) : ?>
+                                            <img src="<?php echo esc_url($testimonial['image']); ?>" style="max-width:100px;">
+                                        <?php endif; ?>
+                                    </div>
+                                    <input type="hidden" class="image-url" name="image" value="<?php echo esc_url($testimonial['image'] ?? ''); ?>">
+                                    <button type="button" class="button upload-image-button"><?php esc_html_e('Upload Image', 'maxoliv'); ?></button>
+                                    <button type="button" class="button remove-image-button" style="<?php echo empty($testimonial['image']) ? 'display:none;' : ''; ?>"><?php esc_html_e('Remove', 'maxoliv'); ?></button>
+                                </div>
+                                
+                                <button type="button" class="button button-remove" data-repeater-delete><?php esc_html_e('Remove', 'maxoliv'); ?></button>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button type="button" class="button button-primary" data-repeater-create><?php esc_html_e('Add Testimonial', 'maxoliv'); ?></button>
+                </div>
+                
+                <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr($this->value()); ?>">
+            </label>
+            <?php
+        }
+        
+        public function enqueue() {
+            wp_enqueue_media();
+            wp_enqueue_script(
+                'maxoliv-testimonials-customizer',
+                get_template_directory_uri() . '/assets/js/testimonials-customizer.js',
+                array('jquery', 'customize-controls', 'jquery-ui-sortable'),
+                filemtime(get_template_directory() . '/assets/js/testimonials-customizer.js'),
+                true
+            );
+            
+            wp_enqueue_style(
+                'maxoliv-testimonials-customizer',
+                get_template_directory_uri() . '/assets/css/testimonials-customizer.css',
+                array(),
+                filemtime(get_template_directory() . '/assets/css/testimonials-customizer.css')
+            );
+        }
     }
-    
-    return $decoded;
 }
+
 
 /**
  * Sanitize Testimonials
@@ -977,13 +1033,64 @@ function maxoliv_sanitize_testimonials($input) {
         foreach ($decoded as $item) {
             $sanitized[] = [
                 'text'   => wp_kses_post($item['text'] ?? ''),
-                'author' => sanitize_text_field($item['author'] ?? '')
+                'author' => sanitize_text_field($item['author'] ?? ''),
+                'image' => esc_url_raw($item['image']?? '')
             ];
         }
         return json_encode($sanitized);
     }
     return '';
 }
+
+
+
+/*** Get Testimonials Data****/
+function maxoliv_get_testimonials() {
+    $default = json_encode([
+        [
+            'text'   => __('This is an amazing experience! The design is stunning, and the UX is smooth.', 'maxoliv'),
+            'author' => __('John Doe', 'maxoliv'),
+            'image' =>  get_theme_file_uri('/assets/images/ali.jpg')
+
+        ],
+        [
+            'text'   => __('One of the best web experiences I\'ve had. Highly recommended!', 'maxoliv'),
+            'author' => __('Jane Smith', 'maxoliv'),
+            'image' => get_theme_file_uri('/assets/images/chinese-investor.jpeg')
+
+        ],
+        [
+            'text'   => __('This is an amazing experience!', 'maxoliv'),
+            'author' => __('John Doe', 'maxoliv'),
+            'image' => get_theme_file_uri('/assets/images/lawyer.webp')
+
+        ]
+    ]);
+    
+    $items = get_theme_mod('maxoliv_testimonials_items', $default);
+    $decoded = json_decode($items, true);
+    
+    // Validate each testimonial
+    foreach ($decoded as &$item) {
+        $item['text'] = isset($item['text']) ? wp_kses_post($item['text']) : '';
+        $item['author'] = isset($item['author']) ? sanitize_text_field($item['author']) : '';
+        
+        // Handle image paths
+        if (isset($item['image'])) {
+            // If it's a relative path, convert to full URL
+            if (strpos($item['image'], '/') === 0 && strpos($item['image'], '//') !== 0) {
+                $item['image'] = get_theme_file_uri($item['image']);
+            }
+            $item['image'] = esc_url($item['image']);
+        } else {
+            $item['image'] = '';
+        }
+    }
+    
+    return $decoded;
+}
+
+
 
 
 /**
@@ -1042,3 +1149,102 @@ function maxoliv_enqueue_animations() {
     );
 }
 add_action('wp_enqueue_scripts', 'maxoliv_enqueue_animations');
+
+
+
+
+// ***********Typewriter Animation*********
+function maxoliv_enqueue_typewriter_script() {
+    wp_enqueue_script(
+        'typewriter-js',
+        'https://unpkg.com/typewriter-effect@2.18.1/dist/core.js',
+        array(),
+        null,
+        true
+    );
+
+    // Your custom JS (we’ll create it in Step 3)
+    wp_enqueue_script(
+        'maxoliv-typewriter-init',
+        get_template_directory_uri() . '/assets/js/typewriter-init.js',
+        array('typewriter-js'),
+        null,
+        true
+    );
+
+    // Pass the PHP values to JS
+    $phrases = array_filter([
+        get_theme_mod('typewriter_phrase_1'),
+        get_theme_mod('typewriter_phrase_2'),
+        get_theme_mod('typewriter_phrase_3'),
+    ]);
+
+    wp_localize_script('maxoliv-typewriter', 'typewriterData', [
+        'phrases' => array_values($phrases),
+    ]);
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_typewriter_script');
+
+
+// ***************Typewriter Customizer*************
+
+function maxoliv_customize_register($wp_customize) {
+    // Section
+    $wp_customize->add_section('typewriter_text_section', array(
+        'title'    => __('Typewriter Phrases', 'maxolivtextdomain'),
+        'priority' => 30,
+    ));
+
+    // Settings and Controls for each phrase (you can add more)
+    for ($i = 1; $i <= 3; $i++) {
+        $wp_customize->add_setting("typewriter_phrase_$i", array(
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ));
+
+        $wp_customize->add_control("typewriter_phrase_$i", array(
+            'label'    => sprintf(__('Phrase %d', 'maxolivtextdomain'), $i),
+            'section'  => 'typewriter_text_section',
+            'type'     => 'text',
+            'priority' => $i,
+        ));
+    }
+}
+add_action('customize_register', 'maxoliv_customize_register');
+
+function maxoliv_localize_typewriter_phrases() {
+    $phrases = array();
+
+    for ($i = 1; $i <= 3; $i++) {
+        $phrases[] = get_theme_mod("typewriter_phrase_$i", '');
+    }
+
+    wp_localize_script('maxoliv-typewriter-init', 'typewriterPhrases', $phrases);
+}
+add_action('wp_enqueue_scripts', 'maxoliv_localize_typewriter_phrases');
+
+
+
+// function maxoliv_customize_register_typewriter($wp_customize) {
+//     $wp_customize->add_section('typewriter_section', array(
+//         'title' => __('Typewriter Text', 'maxolivtextdomain'),
+//         'priority' => 31,
+//     ));
+
+//     for ($i = 1; $i <= 3; $i++) {
+//         $wp_customize->add_setting("typewriter_phrase_{$i}", array(
+//             'default' => '',
+//             'sanitize_callback' => 'sanitize_text_field',
+//         ));
+
+//         $wp_customize->add_control("typewriter_phrase_{$i}_control", array(
+//             'label' => __("Typewriter Phrase {$i}", 'maxolivtextdomain'),
+//             'section' => 'typewriter_section',
+//             'settings' => "typewriter_phrase_{$i}",
+//             'type' => 'text',
+//         ));
+//     }
+// }
+// add_action('customize_register', 'maxoliv_customize_register_typewriter');
+
+

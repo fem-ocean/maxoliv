@@ -25,13 +25,17 @@ if (!defined('ABSPATH')) {
     
     <div class="left-panel__info">
         <h1 class="left-panel__name">
-            <?php echo wp_kses_post(get_theme_mod('left_panel_name', __('Hello. I\'m Olufemi Oshin. I am a PMP-certified Project Manager, Business Analyst and Harvard-certified Web & Software Developer', 'maxolivtextdomain'))); ?>
+            <?php echo wp_kses_post(get_theme_mod('left_panel_greeting', __('Hello. I\'m Olufemi Oshin.', 'maxolivtextdomain'))); ?>
+            <br>
+            I am <span id="typewriter-text"></span>
         </h1>
         
         <p class="left-panel__title">
             <?php echo wp_kses_post(get_theme_mod('left_panel_description', __('I bridge the gap between business needs and digital solutions—managing projects end to end, gathering precise requirements, and building products that users love.', 'maxolivtextdomain'))); ?>
         </p>
     </div>
+    
+
     
     <a href="#contact" class="left-panel__button">
         <?php echo esc_html(get_theme_mod('left_panel_button_text', __('Let\'s Work Together!', 'maxolivtextdomain'))); ?>

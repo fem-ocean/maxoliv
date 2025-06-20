@@ -1,0 +1,32 @@
+.maxoliv-testimonials-repeater .testimonial-item {
+    background: #f9f9f9;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+.maxoliv-testimonials-repeater textarea {
+    width: 100%;
+    min-height: 80px;
+    margin-bottom: 10px;
+}
+
+.maxoliv-testimonials-repeater .testimonial-image-upload {
+    margin: 10px 0;
+}
+
+.maxoliv-testimonials-repeater .image-preview {
+    margin-bottom: 10px;
+}
+
+.maxoliv-testimonials-repeater .button-remove {
+    margin-top: 10px;
+    background: #dc3232;
+    color: white;
+    border-color: #dc3232;
+}
+
+.maxoliv-testimonials-repeater [data-repeater-create] {
+    margin-top: 15px;
+}
