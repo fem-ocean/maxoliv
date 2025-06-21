@@ -8,8 +8,18 @@
 
 if (!defined('ABSPATH')) exit;
 
+
+
+
+
+
 // Get testimonials from customizer
-$testimonials = maxoliv_get_testimonials();
+
+// METHOD 1: Get from Customizer (original)
+// $testimonials = maxoliv_get_testimonials();
+
+// METHOD 2: Get local testimonials
+$testimonials = maxoliv_get_local_testimonials();
 $bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
 ?>
 
@@ -27,6 +37,7 @@ $bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
                             <?php if (!empty($testimonial['image'])) : ?>
                                 <div class="testimonial-image-container">
                                     <?php 
+                                    // First try to get WordPress attachment
                                     $image_id = attachment_url_to_postid($testimonial['image']);
                                     if ($image_id) {
                                         echo wp_get_attachment_image(
@@ -39,7 +50,7 @@ $bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
                                             )
                                         );
                                     } else {
-                                        // Fallback for external URLs
+                                        // Fallback for local/remote images
                                         echo '<img src="' . esc_url($testimonial['image']) . '" class="testimonial-author-image" alt="' . esc_attr($testimonial['author']) . '" loading="lazy">';
                                     }
                                     ?>

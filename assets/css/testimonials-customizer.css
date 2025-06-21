@@ -30,3 +30,33 @@
 .maxoliv-testimonials-repeater [data-repeater-create] {
     margin-top: 15px;
 }
+
+
+
+.testimonial-item.has-error textarea,
+.testimonial-item.has-error input[type="text"] {
+    background-color: #ffebeb;
+}
+
+
+
+.testimonial-error-message {
+    margin-top: 10px;
+    padding: 10px;
+    background: #fff0f0;
+    border-left: 3px solid #dc3232;
+}
+
+
+/* Error states */
+.testimonial-item.has-error {
+    border-left: 3px solid #dc3232;
+    background-color: #fff0f0;
+    margin-bottom: 15px;
+    padding-left: 10px;
+}
+
+/* Customizer notification styling */
+.customize-control-notifications-container {
+    margin: 10px 0;
+}
