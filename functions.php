@@ -1358,3 +1358,49 @@ function maxoliv_enqueue_projects_js() {
     );
 }
 add_action('wp_enqueue_scripts', 'maxoliv_enqueue_projects_js');
+
+
+
+
+// ********Contact Section************
+
+// Contact Form Handler
+// This file handles the contact form submission via AJAX
+
+// Only process POST requests
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get form data
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+    $company = sanitize_text_field($_POST['company']);
+    $message = sanitize_textarea_field($_POST['message']);
+    $contact_type = sanitize_text_field($_POST['contact_type']);
+    
+    // Email headers
+    $to = get_option('admin_email'); // Send to admin email
+    $subject = 'New Contact Request: ' . $contact_type;
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+    
+    // Email body
+    $body = "
+        <h2>New Contact Request</h2>
+        <p><strong>Type:</strong> {$contact_type}</p>
+        <p><strong>Name:</strong> {$name}</p>
+        <p><strong>Email:</strong> {$email}</p>
+        <p><strong>Company:</strong> {$company}</p>
+        <p><strong>Message:</strong></p>
+        <p>{$message}</p>
+    ";
+    
+    // Send email
+    $sent = wp_mail($to, $subject, $body, $headers);
+    
+    // Return response
+    if ($sent) {
+        wp_send_json_success('Message sent successfully!');
+    } else {
+        wp_send_json_error('Failed to send message.');
+    }
+} else {
+    wp_send_json_error('Invalid request method.');
+}
