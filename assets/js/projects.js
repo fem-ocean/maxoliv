@@ -1,49 +1,148 @@
+// document.addEventListener("DOMContentLoaded", function () {
+//   const container = document.querySelector(".projects-carousel-container");
+
+//   const prevBtn = document.querySelector(".project-carousel-prev");
+//   const nextBtn = document.querySelector(".project-carousel-next");
+
+//   const cards = Array.from(document.querySelectorAll(".project-card"));
+
+//   if (!container || cards.length === 0) return;
+
+//   // Get the background colors from the inline style of each card
+//   const cardColors = cards.map(
+//     (card) => card.style.backgroundColor || "#0cdcf7"
+//   );
+
+//   let currentIndex = 0;
+
+//   // Hide all cards except the current one
+//   function updateCarousel() {
+//     cards.forEach((card, i) => {
+//       card.style.display = i === currentIndex ? "block" : "none";
+//       card.style.margin = "0 auto"; // Center the card
+//     });
+//     // Update button colors to match card
+//     const color = cardColors[currentIndex];
+//     prevBtn.style.background = color;
+//     nextBtn.style.background = color;
+//   }
+
+//   // Infinite loop navigation
+//   function goToNext() {
+//     currentIndex = (currentIndex + 1) % cards.length;
+//     updateCarousel();
+//   }
+//   function goToPrev() {
+//     currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+//     updateCarousel();
+//   }
+
+
+//   // Event listeners
+//   nextBtn.addEventListener("click", goToNext);
+//   prevBtn.addEventListener("click", goToPrev);
+
+//   document.addEventListener("keydown", function (e) {
+//     if (e.key === "ArrowRight") goToNext();
+//     if (e.key === "ArrowLeft") goToPrev();
+//   });
+
+//   // Initial state
+//   updateCarousel();
+// });
+
+//   // Initialize - center the first card
+//   if (cards.length > 0) {
+//     container.scrollTo({
+//       left: 0,
+//       behavior: "smooth",
+//     });
+//     console.log(container);
+//   }
+
+//   // Navigation functions
+//   function scrollToCard(direction) {
+//     if (cards.length === 0) return;
+
+//     if (direction === "next") {
+//       currentIndex = (currentIndex + 1) % cards.length;
+//     } else {
+//       currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+//     }
+
+//     container.scrollTo({
+//       left: currentIndex * cardWidth,
+//       behavior: "smooth",
+//     });
+//   }
+
+//   // Event listeners
+//   nextBtn.addEventListener("click", () => scrollToCard("next"));
+//   prevBtn.addEventListener("click", () => scrollToCard("prev"));
+
+//   // Keyboard navigation
+//   document.addEventListener("keydown", function (e) {
+//     if (e.key === "ArrowRight") scrollToCard("next");
+//     if (e.key === "ArrowLeft") scrollToCard("prev");
+//   });
+// });
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
-  const carousels = document.querySelectorAll(".project-carousel");
+  const container = document.querySelector(".projects-carousel-container");
+  const prevBtn = document.querySelector(".project-carousel-prev");
+  const nextBtn = document.querySelector(".project-carousel-next");
+  const cards = Array.from(document.querySelectorAll(".project-card"));
+  const projectLinkButton = document.querySelector(".project-link");
 
-  carousels.forEach((carousel) => {
-    const container = carousel.querySelector(".project-carousel-container");
-    const cards = carousel.querySelectorAll(".project-card");
-    const prevBtn = carousel.querySelector(".project-carousel-prev");
-    const nextBtn = carousel.querySelector(".project-carousel-next");
-    let currentIndex = 0;
+  if (!container || cards.length === 0) return;
 
-    // Initialize - hide all cards except first
-    cards.forEach((card, index) => {
-      if (index !== 0) {
-        card.style.display = "none";
-      }
+  // Get the background colors from the inline style of each card
+  const cardColors = cards.map(
+    (card) => card.style.backgroundColor || "#0cdcf7"
+  );
+
+  let currentIndex = 0;
+
+  // Hide all cards except the current one
+  function updateCarousel() {
+    cards.forEach((card, i) => {
+      card.style.animation = "slideOut 0.3s ease-out forwards";
+      setTimeout(() => {
+        card.style.display = i === currentIndex ? "flex" : "none";
+        card.style.margin = "0 auto"; // Center the card
+        card.style.animation = "slideIn 0.4s ease-out forwards"; // Add animation for entry
+      }, 300); // Wait for animation to finish before changing display
+
     });
+    // Update button colors to match card
+    const color = cardColors[currentIndex];
+    prevBtn.style.background = color;
+    nextBtn.style.background = color;
+    projectLinkButton.style.color = color;
+  }
 
-    // Navigation functions
-    function showCard(index) {
-      // Animate out current card
-      if (cards[currentIndex]) {
-        cards[currentIndex].style.animation = "slideOut 0.5s forwards";
-        setTimeout(() => {
-          cards[currentIndex].style.display = "none";
-          cards[currentIndex].style.animation = "";
-        }, 500);
-      }
+  // Infinite loop navigation
+  function goToNext() {
+    currentIndex = (currentIndex + 1) % cards.length;
+    updateCarousel();
+  }
+  function goToPrev() {
+    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+    updateCarousel();
+  }
 
-      // Animate in new card
-      currentIndex = index;
-      cards[currentIndex].style.display = "block";
-      cards[currentIndex].style.animation = "slideIn 0.5s forwards";
-    }
+  // Event listeners
+  nextBtn.addEventListener("click", goToNext);
+  prevBtn.addEventListener("click", goToPrev);
 
-    function nextCard() {
-      const newIndex = (currentIndex + 1) % cards.length;
-      showCard(newIndex);
-    }
-
-    function prevCard() {
-      const newIndex = (currentIndex - 1 + cards.length) % cards.length;
-      showCard(newIndex);
-    }
-
-    // Event listeners
-    nextBtn.addEventListener("click", nextCard);
-    prevBtn.addEventListener("click", prevCard);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") goToNext();
+    if (e.key === "ArrowLeft") goToPrev();
   });
+
+  // Initial state
+  updateCarousel();
 });

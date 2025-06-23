@@ -1345,3 +1345,16 @@ function register_projects_cpt() {
     register_post_type('project', $args);
 }
 add_action('init', 'register_projects_cpt');
+
+
+
+function maxoliv_enqueue_projects_js() {
+    wp_enqueue_script(
+        'maxoliv-projects',
+        get_template_directory_uri() . '/assets/js/projects.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/projects.js'),
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_projects_js');

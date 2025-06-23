@@ -1,6 +1,6 @@
 <?php
 /**
- * Projects Section Template
+ * Projects Section Template with Animated Carousel
  *
  * @package Maxoliv
  * @since 1.0.0
@@ -16,10 +16,10 @@ $projects = new WP_Query(array(
 ));
 
 // Get unique colors for each project
-$colors = array('#0cdcf7', '#7b2cbf', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51');
+$colors = array('#2e0014', '#7b2cbf', '#0e1c36', '#002626', '#6369d1', '#30343f', '#a72608', '#231942', '#006e90', '#51291E', '#7E2E84', '#131515', '#403D39', '#0081A7', '#AA1155', '#0b3c49', '#343E3D', '#0075A2', '#1C3144', '#0A0908');
 ?>
 
-<section id="projects-section" class="project-carousel" style="background-color:black;">
+<section id="projects-section" class="project-carousel" >
     <div class="project-section-intro">
         <h1>My Projects</h1>
         <p>Here are some of my works...</p>
@@ -35,7 +35,7 @@ $colors = array('#0cdcf7', '#7b2cbf', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51'
 
         <?php if ($projects->have_posts()) : ?>
             <?php $i = 0; while ($projects->have_posts()) : $projects->the_post(); ?>
-                <div class="project-card" style="bckground-color: <?php echo esc_attr($colors[$i % count($colors)]); ?>;">
+                <div class="project-card" style="background-color: <?php echo esc_attr($colors[$i % count($colors)]); ?>;">
                     <?php if (has_post_thumbnail()) : ?>
                         <img src="<?php the_post_thumbnail_url('large'); ?>" alt="<?php the_title(); ?>" class="project-card-image">
                     <?php endif; ?>
@@ -61,7 +61,7 @@ $colors = array('#0cdcf7', '#7b2cbf', '#2a9d8f', '#e9c46a', '#f4a261', '#e76f51'
                         
                         <?php $project_link = get_field('project_link'); ?>
                         <?php if ($project_link) : ?>
-                            <a href="<?php echo esc_url($project_link); ?>" target="_blank" class="project-link">
+                            <a href="<?php echo esc_url($project_link); ?>" target="_blank" class="project-link" style="color: <?php echo esc_attr($colors[$i % count($colors)]); ?>;">
                                 View Project
                             </a>
                         <?php endif; ?>
