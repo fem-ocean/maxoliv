@@ -27,7 +27,7 @@ if (!defined('ABSPATH')) {
         <h1 class="left-panel__name">
             <?php echo wp_kses_post(get_theme_mod('left_panel_greeting', __('Hello. I\'m Olufemi Oshin.', 'maxolivtextdomain'))); ?>
             <br>
-            I am <span id="typewriter-text"></span>
+            <span class="typewriter-container">I am <span id="typewriter-text"></span></span>
         </h1>
         
         <p class="left-panel__title">

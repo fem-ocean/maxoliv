@@ -6,21 +6,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalData = {
     booking: {
       title: "I'd like to book you in",
-      icon: "<?php echo get_template_directory_uri(); ?>/images/icon-working.png",
+      icon: maxoliv_vars.icons.working,
       color: "#fd8e8e",
     },
     quote: {
       title: "I'd like a quote for a project",
-      icon: "<?php echo get_template_directory_uri(); ?>/images/icon-money.png",
+      icon: maxoliv_vars.icons.money,
       color: "#fde58e",
     },
     hello: {
       title: "I'd just like to say Hello",
-      icon: "<?php echo get_template_directory_uri(); ?>/images/icon-wave.png",
+      icon: maxoliv_vars.icons.wave,
       color: "#8efdb0",
     },
   };
 
+  
   // Handle option clicks
   contactOptions.forEach((option) => {
     option.addEventListener("click", function () {
@@ -35,13 +36,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalHTML = `
             <div class="contact-modal-overlay">
                 <div class="contact-modal">
-                    <div class="contact-modal-close">X</div>
+                    <div class="contact-modal-close">
+                      <img src="${maxoliv_vars.closeButton}" alt="Close" style="width: 30px" />
+                    </div>
                     <div class="contact-modal-content">
                         <div class="contact-modal-header">
                             <div class="contact-circle" style="background-color: ${data.color}">
                                 <img src="${data.icon}" alt="${data.title}" class="contact-icon">
                             </div>
-                            <h3>${data.title}</h3>
+                            <h3 style="color: #2e304b">${data.title}</h3>
                         </div>
                         
                         <form id="contact-form" class="contact-form">
@@ -69,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             
                             <div class="contact-form-checkbox">
                                 <input type="checkbox" id="contact-agreement" name="agreement" required>
-                                <label for="contact-agreement">I agree to be a nice and kind person😊</label>
+                                <label for="contact-agreement" style="color: #2e304b">I agree to be a nice and kind person😊</label>
                             </div>
                             
                             <button type="submit" class="contact-form-submit">Send Message</button>
@@ -109,25 +112,68 @@ document.addEventListener("DOMContentLoaded", function () {
   // Handle form submission
   function handleFormSubmit(e) {
     e.preventDefault();
-
-    // Here you would typically send the form data to your server
-    // For WordPress, you would use AJAX to a custom endpoint
-
-    // Example success message
     const form = e.target;
-    const successHTML = `
+
+ 
+
+    //Create FormData object  
+    const formData = new FormData(form);
+    // Add wordpress AJAX security nonce
+    formData.append("action", "maxoliv_handle_contact_form");
+    formData.append("security", maxoliv_vars.ajax_nonce);
+
+    //Debug: Log what we are sending
+    console.log("Form Data:", Object.fromEntries(formData));
+
+    //show loading state
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+
+    //Send via AJAX
+    fetch(maxoliv_vars.ajax_url, {
+      method: "POST",
+      body: formData,
+      headers: {
+            'Accept': 'application/json' // Tell WordPress we want JSON back
+      }
+    })
+      .then((response) => {
+        console.log('Raw response:', response);
+        return response.json(); //Then try to pasrse the response as JSON
+      })
+      .then((data) => {
+        console.log('Parsed response:', data);
+        if (data.success) {
+          // Show success message
+          form.insertAdjacentHTML(
+            "beforeend",
+            `
             <div class="contact-form-success">
-                Message sent successfully! 🎉
+                // Message sent successfully! 🎉
+                ${data.data} 🎉
             </div>
-        `;
+          `
+          );
 
-    form.insertAdjacentHTML("beforeend", successHTML);
-
-    // Reset form after delay
-    setTimeout(() => {
-      form.reset();
-      closeModal();
-    }, 3000);
+          // Reset form after delay
+          setTimeout(() => {
+            form.reset();
+            closeModal();
+          }, 4000);
+        } else {
+          // Show error message
+          alert("Error sending message: " + data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Full Error:", error);
+        alert("Failed to connect to server. Check console for details.😢");
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send Message";
+      });     
   }
 
   // Close modal on ESC key

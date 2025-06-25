@@ -1364,43 +1364,116 @@ add_action('wp_enqueue_scripts', 'maxoliv_enqueue_projects_js');
 
 // ********Contact Section************
 
-// Contact Form Handler
-// This file handles the contact form submission via AJAX
 
-// Only process POST requests
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get form data
-    $name = sanitize_text_field($_POST['name']);
-    $email = sanitize_email($_POST['email']);
-    $company = sanitize_text_field($_POST['company']);
-    $message = sanitize_textarea_field($_POST['message']);
-    $contact_type = sanitize_text_field($_POST['contact_type']);
+/**
+ * Handle Contact Form Submission
+ */
+function maxoliv_handle_contact_form() {
+    // Verify nonce for security
+    if (!check_ajax_referer('maxoliv_contact_nonce', 'security', false)) {
+        wp_send_json_error('Security check failed', 403);
+    }
+
+
+    // Only process POST requests
+    if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        wp_send_json_error('Invalid request method.');
+    }
+
+    // 2. Validate required fields
+    $required = ['name', 'email', 'message'];
+    foreach ($required as $field) {
+        if (empty($_POST[$field])) {
+            wp_send_json_error("Please fill in the $field field", 400);
+        }
+    }
+
+
+    // 3. Sanitize form data
+    $data = array(
+        'name' => sanitize_text_field($_POST['name'] ?? ''),
+        'email' => sanitize_email($_POST['email'] ?? ''),
+        'company' => sanitize_text_field($_POST['company'] ?? ''),
+        'message' => sanitize_textarea_field($_POST['message'] ?? ''),
+        'contact_type' => sanitize_text_field($_POST['contact_type'] ?? 'General Inquiry')
+    );
+
+    // 4. Prepare email (simplified example)
+    $to = get_option('admin_email');
+    $subject = "New contact: {$data['name']}";
+    $message = "From: {$data['name']} <{$data['email']}>\n\n{$data['message']}";
+
+
     
-    // Email headers
-    $to = get_option('admin_email'); // Send to admin email
-    $subject = 'New Contact Request: ' . $contact_type;
+
+    
+
+    
+
+    // Prepare email
+    $to = get_option('admin_email');
+    $subject = 'New Contact Request: ' . $data['contact_type'];
     $headers = array('Content-Type: text/html; charset=UTF-8');
     
-    // Email body
     $body = "
         <h2>New Contact Request</h2>
-        <p><strong>Type:</strong> {$contact_type}</p>
-        <p><strong>Name:</strong> {$name}</p>
-        <p><strong>Email:</strong> {$email}</p>
-        <p><strong>Company:</strong> {$company}</p>
+        <p><strong>Type:</strong> {$data['contact_type']}</p>
+        <p><strong>Name:</strong> {$data['name']}</p>
+        <p><strong>Email:</strong> {$data['email']}</p>
+        <p><strong>Company:</strong> {$data['company']}</p>
         <p><strong>Message:</strong></p>
-        <p>{$message}</p>
+        <p>{$data['message']}</p>
     ";
-    
+
     // Send email
     $sent = wp_mail($to, $subject, $body, $headers);
-    
+
     // Return response
-    if ($sent) {
-        wp_send_json_success('Message sent successfully!');
-    } else {
-        wp_send_json_error('Failed to send message.');
-    }
-} else {
-    wp_send_json_error('Invalid request method.');
+    // if ($sent) {
+    //     wp_send_json_success('Message sent successfully!');
+    // } else {
+    //     wp_send_json_error('Failed to send message.');
+    // }
+
+    //fake success response for testing
+    wp_send_json_success('Message sent successfully! - This is a fake response for testing purposes.');
+
 }
+add_action('wp_ajax_maxoliv_handle_contact_form', 'maxoliv_handle_contact_form');
+add_action('wp_ajax_nopriv_maxoliv_handle_contact_form', 'maxoliv_handle_contact_form');
+
+
+function maxoliv_enqueue_contact_scripts() {
+    // Enqueue contact JS
+    wp_enqueue_script(
+        'maxoliv-contact',
+        get_template_directory_uri() . '/assets/js/contact.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/contact.js'),
+        true
+    );
+
+    // Localize with path variables
+    wp_localize_script('maxoliv-contact', 'maxoliv_vars', [
+        'templateUrl' => get_template_directory_uri(),
+        'icons' => [
+            'working' => get_template_directory_uri() . '/assets/images/icon-working.png',
+            'money'   => get_template_directory_uri() . '/assets/images/icon-money.png',
+            'wave'    => get_template_directory_uri() . '/assets/images/icon-wave.png'
+        ],
+        'closeButton' => get_template_directory_uri() . '/assets/images/close2.png',
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'ajax_nonce' => wp_create_nonce('maxoliv_contact_nonce')
+        
+    ]);
+    
+    
+}
+add_action('wp_enqueue_scripts', 'maxoliv_enqueue_contact_scripts');
+
+// Add AJAX handler
+add_action('wp_ajax_contact_form_submit', 'maxoliv_handle_contact_form');
+add_action('wp_ajax_nopriv_contact_form_submit', 'maxoliv_handle_contact_form');
+
+
+
