@@ -25,7 +25,7 @@ get_header(); // Load header.php
         <!-- Background Layer -->
         <div class="right-panel-bg" 
              style="background-image: url('<?php echo esc_url(get_theme_mod('right_panel_bg', get_template_directory_uri() . '/assets/images/mypicsedited2.jpg')); ?>')">
-            <div class="overlay" style="background-color: <?php echo esc_attr(get_theme_mod('overlay_color', 'rgba(253,142,142,0.3)')); ?>"></div>
+            <div class="overlay" style="background-color: var(--theme-transparent-overlay, <?php echo esc_attr(get_theme_mod('overlay_color', 'rgba(253,142,142,0.3)')); ?>)"></div>
         </div>
         <!-- Scrollable Sections -->
         <main class="scrollable-sections">

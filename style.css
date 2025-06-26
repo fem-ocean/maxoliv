@@ -13,26 +13,74 @@ Text Domain: maxoliv
 
 /* CSS Variables */
 :root {
+    --theme-bg-color: #fd8e8e;
+    --theme-text-color: #ffffff;
+    --theme-border-color: rgb(253, 142, 142);
+    --theme-primary: #fd8e8e;
+    --theme-secondary: #2e304b;
+    --theme-text: #2e304b;
+    --theme-transparent-overlay: rgba(253, 142, 142, 0.3);
+    --theme-hover-color: #fd8e8e;
+    --theme-leftBtn-text: #fd8e8e;
+    --theme-leftBtnText-hover: #ffffff;
+    --theme-certBtn-text: #ffffff;
+    --theme-certBtn-hover: #fd8e8e;
+    --theme-certBtnHover-dark: #fc4a4a;
+    --theme-swiper-bg:#ffffff;
+}
+
+
+
+.theme-pink {
+    --theme-primary: #fd8e8e;
+    --theme-text: #2e304b;
+    --theme-transparent-overlay: rgba(253, 142, 142, 0.3);
+    --theme-hover-color: #fd8e8e;
+    --theme-leftBtn-text: #fd8e8e;
+    --theme-certBtn-text: #ffffff;
+    --theme-certBtn-hover: #fd8e8e;
+    --theme-certBtnHover-dark: #fc4a4a;
+}
+
+.theme-yellow {
+    --theme-primary: rgb(253, 229, 142);
+    --theme-transparent-overlay: rgba(253, 229, 142, 0.3);
+    --theme-hover-color: #0a090c;
+    --theme-leftBtn-text: rgb(253, 229, 142);
+    --theme-certBtn-text: #000000;
+    --theme-certBtn-hover: rgb(253, 229, 142);
+    --theme-certBtnHover-dark: #fcd64a;
+    --theme-swiper-bg: #0a090c;
+}
+
+.theme-green {
+    --theme-primary: #8efdb0;
+    --theme-transparent-overlay: rgba(142, 253, 176, 0.3);
+    --theme-hover-color: #8efdb0;
+    --theme-leftBtn-text: #8efdb0;
+    --theme-leftBtnText-hover: #000000;
+    --theme-certBtn-text: #000000;
+    --theme-certBtn-hover: #8efdb0;
+    --theme-certBtnHover-dark: #4afc80;
+}
+
+.theme-dark {
     --theme-bg-color: #121212;
     --theme-text-color: #ffffff;
     --theme-border-color: #fd8e8e;
-    --theme-primary: #fd8e8e;
-    --theme-secondary: #2e304b;
-    --theme-text: #121212;
-}
 
-
-
-.theme-dark {
-    --theme-primary: #fde58e;
-    --theme-secondary: #1a1a2e;
-    --theme-text: #ffffff;
-}
-
-.theme-blue {
-    --theme-primary: #8efdb0;
-    --theme-secondary: #0f3460;
-    --theme-text: #121212;
+    --theme-primary: #ffffff;
+    --theme-secondary: #0a090c;
+    --theme-leftBtn-text: #ffffff;
+    --theme-hover-color: #ffffff;
+    --theme-leftBtnText-hover: #000000;
+    --theme-text: #2e304b;
+    --theme-transparent-overlay: rgba(0, 0, 0, 0.3);
+    
+    --theme-certBtn-hover: #0a090c;
+    --theme-certBtn-text: #ffffff;
+    --theme-certBtnHover-dark: #000000;
+    --theme-swiper-bg: #0a090c;
 }
 
 
@@ -60,7 +108,7 @@ body {
     overflow-x: hidden;
     height: 100%;
     font-family: 'Poppins', sans-serif;
-    border: 4px solid red;
+    /* border: 4px solid red; */
 }
 
 a {

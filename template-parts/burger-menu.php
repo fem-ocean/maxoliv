@@ -11,9 +11,9 @@ if (!defined('ABSPATH')) {
 
 <div class="burger-menu-wrapper">
     <button class="burger-toggle" id="burger-toggle" aria-expanded="false" aria-label="<?php esc_attr_e('Toggle Menu', 'maxoliv'); ?>">
-        <div class="burger-circle" style="background-color: <?php echo esc_attr(get_theme_mod('burger_circle_color', '#fd8e8e')); ?>">
+        <div class="burger-circle" style="background-color: var(--theme-primary, <?php echo esc_attr(get_theme_mod('burger_circle_color', '#fd8e8e')); ?>);">
             <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/icon-hamburger.png'); ?>" 
-                 class="burger-icon" alt="<?php esc_attr_e('Menu', 'maxoliv'); ?>">
+             class="burger-icon" alt="<?php esc_attr_e('Menu', 'maxoliv'); ?>">
         </div>
     </button>
 
@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
                 
                 <nav class="burger-menu-nav">
                     <?php 
-                    $menu_sections = array('about', 'certifications', 'references', 'projects', 'contact');
+                    $menu_sections = array('about', 'certifications', 'testimonials','projects', 'contact');
                     
                     foreach ($menu_sections as $section) : 
                         $title = get_theme_mod('menu_item_' . $section . '_title', ucfirst($section));

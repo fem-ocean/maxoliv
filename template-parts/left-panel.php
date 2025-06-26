@@ -41,7 +41,7 @@ if (!defined('ABSPATH')) {
         <?php echo esc_html(get_theme_mod('left_panel_button_text', __('Let\'s Work Together!', 'maxolivtextdomain'))); ?>
     </a>
     
-    <div class="left-panel__social">
+    <div class="left-panel__">
         <p class="left-panel__social-text">
             <?php echo esc_html(get_theme_mod('left_panel_social_heading', __('Let\'s Connect', 'maxolivtextdomain'))); ?>
         </p>
@@ -56,21 +56,21 @@ if (!defined('ABSPATH')) {
             <?php if ($github = get_theme_mod('left_panel_github', 'https://github.com/fem-ocean')) : ?>
                 <a href="<?php echo esc_url($github); ?>" target="_blank" rel="noopener noreferrer">
                     <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/github-icon.svg'); ?>" 
-                         class="social-icon" style="width:40px;height:40px;" alt="<?php esc_attr_e('GitHub', 'maxolivtextdomain'); ?>">
+                         class="social-icon" alt="<?php esc_attr_e('GitHub', 'maxolivtextdomain'); ?>">
                 </a>
             <?php endif; ?>
 
             <?php if ($twitter = get_theme_mod('left_panel_twitter', 'https://twitter.com/femi_oshin')) : ?>
                 <a href="<?php echo esc_url($twitter); ?>" target="_blank" rel="noopener noreferrer">
                     <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/twitterx.png'); ?>" 
-                         class="social-icon" style="width:40px;height:40px;" alt="<?php esc_attr_e('Twitter', 'maxolivtextdomain'); ?>">
+                         class="social-icon" alt="<?php esc_attr_e('Twitter', 'maxolivtextdomain'); ?>">
                 </a>
             <?php endif; ?>
 
             <?php if ($youtube = get_theme_mod('left_panel_youtube', 'https://youtube.com/@habby9367')) : ?>
                 <a href="<?php echo esc_url($youtube); ?>" target="_blank" rel="noopener noreferrer">
                     <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/youtube.png'); ?>" 
-                         class="social-icon" style="width:40px;height:40px;" alt="<?php esc_attr_e('YouTube', 'maxolivtextdomain'); ?>">
+                         class="social-icon" alt="<?php esc_attr_e('YouTube', 'maxolivtextdomain'); ?>">
                 </a>
             <?php endif; ?>
             

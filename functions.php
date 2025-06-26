@@ -169,9 +169,9 @@ function maxoliv_burger_menu_customize_register($wp_customize) {
             'title' => __('Certifications', 'maxoliv'),
             'desc'  => __('Recognition from the best institutions', 'maxoliv')
         ),
-        'references' => array(
-            'title' => __('References', 'maxoliv'),
-            'desc'  => __('Hear what our happy says', 'maxoliv')
+        'testimonials' => array(
+            'title' => __('Testimonials', 'maxoliv'),
+            'desc'  => __('Hear what our happy clients say', 'maxoliv')
         ),
         'projects' => array(
             'title' => __('Projects', 'maxoliv'),
@@ -222,10 +222,6 @@ function maxoliv_burger_menu_customize_register($wp_customize) {
             get_template_part('template-parts/burger-menu');
         }
     ));
-
-    
-
-
 }
 add_action('customize_register', 'maxoliv_burger_menu_customize_register');
 
@@ -256,8 +252,8 @@ function maxoliv_theme_switcher_customize_register($wp_customize) {
         'priority' => 45,
     ));
     
-    // Light Theme Color
-    $wp_customize->add_setting('theme_switcher_light_color', array(
+    // Pink Theme Color
+    $wp_customize->add_setting('theme_switcher_pink_color', array(
         'default'           => '#fd8e8e',
         'sanitize_callback' => 'sanitize_hex_color',
         'transport'         => 'postMessage'
@@ -265,17 +261,51 @@ function maxoliv_theme_switcher_customize_register($wp_customize) {
     
     $wp_customize->add_control(new WP_Customize_Color_Control(
         $wp_customize,
-        'theme_switcher_light_color_control',
+        'theme_switcher_pink_color_control',
         array(
-            'label'    => __('Light Theme Color', 'maxoliv'),
+            'label'    => __('Pink Theme Color', 'maxoliv'),
             'section'  => 'maxoliv_theme_switcher',
-            'settings' => 'theme_switcher_light_color'
+            'settings' => 'theme_switcher_pink_color'
+        )
+    ));
+
+    // Yellow Theme Color
+    $wp_customize->add_setting('theme_switcher_yellow_color', array(
+        'default'           => '#fde58e',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'theme_switcher_yellow_color_control',
+        array(
+            'label'    => __('Yellow Theme Color', 'maxoliv'),
+            'section'  => 'maxoliv_theme_switcher',
+            'settings' => 'theme_switcher_yellow_color'
         )
     ));
     
+    // Green Theme Color
+    $wp_customize->add_setting('theme_switcher_green_color', array(
+        'default'           => '#8efdb0',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'theme_switcher_green_color_control',
+        array(
+            'label'    => __('Green Theme Color', 'maxoliv'),
+            'section'  => 'maxoliv_theme_switcher',
+            'settings' => 'theme_switcher_green_color'
+        )
+    ));
+
     // Dark Theme Color
     $wp_customize->add_setting('theme_switcher_dark_color', array(
-        'default'           => '#fde58e',
+        'default'           => '#0A090C',
         'sanitize_callback' => 'sanitize_hex_color',
         'transport'         => 'postMessage'
     ));
@@ -290,30 +320,14 @@ function maxoliv_theme_switcher_customize_register($wp_customize) {
         )
     ));
     
-    // Blue Theme Color
-    $wp_customize->add_setting('theme_switcher_blue_color', array(
-        'default'           => '#8efdb0',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport'         => 'postMessage'
-    ));
-    
-    $wp_customize->add_control(new WP_Customize_Color_Control(
-        $wp_customize,
-        'theme_switcher_blue_color_control',
-        array(
-            'label'    => __('Blue Theme Color', 'maxoliv'),
-            'section'  => 'maxoliv_theme_switcher',
-            'settings' => 'theme_switcher_blue_color'
-        )
-    ));
-    
     // Selective Refresh
     $wp_customize->selective_refresh->add_partial('theme_switcher_partial', array(
         'selector'        => '.theme-switcher',
         'settings'        => array(
-            'theme_switcher_light_color',
-            'theme_switcher_dark_color',
-            'theme_switcher_blue_color'
+            'theme_switcher_pink_color',
+            'theme_switcher_yellow_color',
+            'theme_switcher_green_color',
+            'theme_switcher_dark_color'
         ),
         'render_callback' => function() {
             ob_start();
@@ -404,7 +418,7 @@ function maxoliv_right_panel_customize_register($wp_customize) {
     $sections = array(
         'about' => __('About Section', 'maxoliv'),
         'certifications' => __('Certifications Section', 'maxoliv'),
-        'references' => __('Reference Section', 'maxoliv'),
+        'testimonials' => __('Testimonials Section', 'maxoliv'),
         'projects' => __('Projects Section', 'maxoliv'),
         'contact' => __('Contact Section', 'maxoliv')
     );
@@ -489,21 +503,21 @@ function maxoliv_right_panel_customize_register($wp_customize) {
     ));
 
 
-    // References Section Content
-    $wp_customize->add_setting('references_section_title', array(
-        'default'           => __('References', 'maxoliv'),
+    // Testimonials Section Content
+    $wp_customize->add_setting('testimonials_section_title', array(
+        'default'           => __('Testimonials', 'maxoliv'),
         'transport'         => 'postMessage',
         'sanitize_callback' => 'sanitize_text_field'
     ));
-    
-    $wp_customize->add_control('references_section_title_control', array(
-        'label'    => __('References Section Title', 'maxoliv'),
+
+    $wp_customize->add_control('testimonials_section_title_control', array(
+        'label'    => __('Testimonials Section Title', 'maxoliv'),
         'section'  => 'maxoliv_right_panel',
-        'settings' => 'references_section_title',
+        'settings' => 'testimonials_section_title',
         'type'     => 'text'
     ));
-    
-    $wp_customize->add_setting('references_section_content', array(
+
+    $wp_customize->add_setting('testimonials_section_content', array(
         'default'           => '',
         'transport'         => 'postMessage',
         'sanitize_callback' => 'wp_kses_post'
@@ -511,11 +525,11 @@ function maxoliv_right_panel_customize_register($wp_customize) {
     
     $wp_customize->add_control(new WP_Customize_Code_Editor_Control(
         $wp_customize,
-        'references_section_content_control',
+        'testimonials_section_content_control',
         array(
-            'label'    => __('References Section Content', 'maxoliv'),
+            'label'    => __('Testimonials Section Content', 'maxoliv'),
             'section'  => 'maxoliv_right_panel',
-            'settings' => 'references_section_content',
+            'settings' => 'testimonials_section_content',
             'code_type' => 'text/html'
         )
     ));
@@ -599,8 +613,8 @@ function maxoliv_right_panel_customize_register($wp_customize) {
             'about_section_content',
             'certifications_section_title',
             'certifications_section_content',
-            'references_section_title',
-            'references_section_content',
+            'testimonials_section_title',
+            'testimonials_section_content',
             'projects_section_title',
             'projects_section_content',
             'contact_section_title',
@@ -871,9 +885,14 @@ function maxoliv_enqueue_certifications_js() {
         filemtime(get_template_directory() . '/assets/js/certifications-widget.js'),
         true
     );
+
+    // Localize with path variables
+    wp_localize_script('maxoliv-certifications', 'maxoliv_vars', array(
+        'templateUrl' => get_template_directory_uri(),
+        'closeButton' => get_template_directory_uri() . '/assets/images/close2.png',
+    ));
 }
 add_action('wp_enqueue_scripts', 'maxoliv_enqueue_certifications_js');
-
 
 
 

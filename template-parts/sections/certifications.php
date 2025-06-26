@@ -51,9 +51,10 @@ if (empty($certifications)) {
     </div>
 
     <div class="cert-section-overlay">
-        <button class="close-overlay"><?php esc_html_e('Close', 'maxoliv'); ?></button>
+        <!-- <button class="close-overlay"><?php esc_html_e('Close', 'maxoliv'); ?></button> -->
 
         <div class="overlay-content">
+            <button class="close-overlay"><img src="<?php echo get_template_directory_uri(); ?>/assets/images/close2.png" alt="close" class="close-icon"></button>
             <h3 class="overlay-title"></h3>
             <p class="overlay-description"></p>
             <a href="#" class="overlay-link" id="overlay-link" target="_blank" rel="noopener noreferrer">
