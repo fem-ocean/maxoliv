@@ -26,7 +26,7 @@ if (empty($certifications)) {
 }
 ?>
 
-<section id="certifications-section" class="maxoliv-section">
+<section id="certifications-section" class="maxoliv-section" style="justify-content: start">
     <h2><?php echo esc_html(get_theme_mod('certifications_title', 'Certifications')); ?></h2>
     
     <div class="certifications-grid">

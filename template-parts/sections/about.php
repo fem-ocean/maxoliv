@@ -17,7 +17,7 @@ $personal_text = get_theme_mod('about_personal_text', __('Outside of work, I\'m 
 
 <section class="about-section" id="about-section">
     <div class="about-me-text">
-        <h1><?php echo esc_html($about_title); ?></h1>
+        <h2><?php echo esc_html($about_title); ?></h2>
         <br />
         <p><?php echo wp_kses_post($intro_text); ?></p>
         <br />

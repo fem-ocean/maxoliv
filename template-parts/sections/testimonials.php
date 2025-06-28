@@ -22,7 +22,7 @@ $testimonials = maxoliv_get_local_testimonials();
 $bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
 ?>
 
-<section id="testimonials-section" class="maxoliv-section" style="background-color: var(--theme-primary, <?php echo esc_attr($bg_color); ?>">
+<section id="testimonials-section" class="maxoliv-section" style="background-color: var(--theme-primary, <?php echo esc_attr($bg_color); "justify-content: center" ?>">
     <div class="testimonials-container">
         <?php if (!empty($testimonials)) : ?>
             <div class="swiper testimonials-swiper">

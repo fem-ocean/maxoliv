@@ -75,7 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <label for="contact-agreement" style="color: #2e304b">I agree to be a nice and kind person😊</label>
                             </div>
                             
-                            <button type="submit" class="contact-form-submit">Send Message</button>
+                            <div class="contact-form-submit-container">
+                              <button type="submit" class="contact-form-submit">Send Message</button>
+                            </div>
+                            
                         </form>
                     </div>
                 </div>
@@ -150,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "beforeend",
             `
             <div class="contact-form-success">
-                // Message sent successfully! 🎉
+                Message sent successfully! 🎉
                 ${data.data} 🎉
             </div>
           `
@@ -160,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
           setTimeout(() => {
             form.reset();
             closeModal();
-          }, 4000);
+          }, 7000);
         } else {
           // Show error message
           alert("Error sending message: " + data.data);

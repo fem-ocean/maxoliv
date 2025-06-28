@@ -275,61 +275,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Handle menu item clicks
-    // document.querySelectorAll(".burger-menu-item").forEach((item) => {
-    //   item.addEventListener("click", function () {
-    //     const section = this.dataset.section;
-    //     const target = document.getElementById(section + "-section");
-    //     const rightPanel = document.getElementById("right-panel");
-
-    //     if (target) {
-    //       // Close menu
-    //       burgerToggle.setAttribute("aria-expanded", "false");
-    //       burgerMenu.classList.remove("active");
-    //       document.body.style.overflow = "";
-
-    //       // Scroll to section
-    //       // setTimeout(() => {
-    //       //   target.scrollIntoView({
-    //       //     behavior: "smooth",
-    //       //     block: "start",
-    //       //   });
-    //       // }, 300);
-    //       //Debugging logs
-    //       console.log("Scrolling to section:", section);
-    //       console.log('scroll Container exists:', !!rightPanel);
-    //       console.log('Container Height:', rightPanel.clientHeight);
-    //       console.log('Section Height:', target.clientHeight);
-    //       console.log('Section Top:', target.getBoundingClientRect().top);
-    //       console.log('Right Panel Scroll Top:', rightPanel.scrollTop);
-    //       console.log('Right Panel Page Y Offset:', rightPanel.pageYOffset);
-    //       console.log('window Inner Height:', window.innerHeight);
-
-    //       const offset = 80;
-    //       const y =
-    //         target.getBoundingClientRect().top;
-    //       rightPanel.scrollTo({ top: y, behavior: "smooth" });
-    //     }
-    //   });
-
-    
-
-
-          // scrollToSection(section) {
-          //   const sectionElement = document.getElementById(section + "-section");
-          //   if (sectionElement) {
-          //     sectionElement.scrollIntoView({
-          //       behavior: "smooth",
-          //       block: "start",
-          //     });
-          //   }
-          // };
-
-          
-
-        
-      
-    // });
 
     document.querySelectorAll(".burger-menu-item").forEach((item) => {
       item.addEventListener("click", function () {

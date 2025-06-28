@@ -24,6 +24,7 @@ if (!defined('ABSPATH')) {
     
     
     <div class="left-panel__info">
+        
         <h1 class="left-panel__name">
             <?php echo wp_kses_post(get_theme_mod('left_panel_greeting', __('Hello. I\'m Olufemi Oshin.', 'maxolivtextdomain'))); ?>
             <br>
@@ -37,7 +38,7 @@ if (!defined('ABSPATH')) {
     
 
     
-    <a href="#contact" class="left-panel__button">
+    <a href="#contact-section" class="left-panel__button">
         <?php echo esc_html(get_theme_mod('left_panel_button_text', __('Let\'s Work Together!', 'maxolivtextdomain'))); ?>
     </a>
     
