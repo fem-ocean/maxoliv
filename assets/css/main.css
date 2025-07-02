@@ -9,19 +9,20 @@
     justify-content: space-between;
     text-align: center;
     padding: 50px 30px;
-    /* position: fixed; */
     gap: 20px;
-    /* border: 2px solid red; */
 }
 
 .left-panel__info {
     color: var(--theme-primary);
+    height: 60%;
+    display: flex;
+    flex-direction: column;
     
 }
 
 .left-panel__info h1 {
     display: inline-block;
-    height: 160px;
+    min-height: 160px;
     /* border: 2px solid yellow; */
     width: 100%;
     padding: 20px 0px;
@@ -40,7 +41,7 @@
 }
 
 .left-panel__button {
-    margin-top: 20px;
+    /* margin-bottom: 70px; */
     padding: 15px 30px;
     font-size: 18px;
     font-weight: 400;
@@ -49,6 +50,9 @@
     border-radius: 50px;
     text-decoration: none;
     transition: all 0.5s ease-in-out;
+    margin-top: 120px;
+    width: max-content;
+    align-self: center;
 }
 
 .left-panel__button:hover {
@@ -82,7 +86,97 @@
     transform: scale(1.1);
 }
 
+.left-panel__ {
+    padding-bottom: 40px;
+    height: 10%;
+}
+
 /* Responsive Styles */
+
+
+@media (min-width: 359px) and (max-width: 380px) {
+    .left-panel__info {
+        padding: 0 18px;
+        height: 75%;
+    }
+
+    .typewriter-container {
+        font-size: 2rem;
+    }
+
+    .left-panel__title {
+        font-size: 1rem;
+    }
+
+    .left-panel__info h1 {
+        min-height: 190px;
+    }
+
+    .left-panel__button {
+        margin-top: 30px;
+    }
+
+}
+
+@media (min-width: 381px) and (max-width: 391px) {
+    .left-panel__info {
+        /* margin-top: 8rem; */
+        padding: 0 18px;
+        height: 75%;
+    }
+
+    .left-panel__name {
+        font-size: 1rem;
+    }
+
+    .left-panel__title {
+        font-size: 1rem;
+    }
+
+    .left-panel__info h1 {
+        margin-bottom: 0px;
+        min-height: 240px;
+    }
+
+    
+
+}
+
+@media (min-width: 392px) and (max-width: 440px) {
+    .left-panel__info {
+        /* padding-top: 82px; */
+        height: 70%;
+    }
+
+    .left-panel__name {
+        font-size: 1.8rem;
+    }
+
+    .left-panel__info h1 {
+        min-height: 300px;
+        margin-bottom: 44px;
+    }
+
+    .left-panel__button {
+        margin-top: 70px;
+
+    }
+    .left-panel__title {
+        margin-top: 0px;
+    }  
+    
+    .left-panel__ {
+        height: 15%;
+    }
+
+
+}
+
+
+@media (min-width: 441px) and (max-width: 767px) {
+
+}
+
 @media (max-width: 1024px) {
     .left-panel {
         width: 100%;
@@ -94,41 +188,7 @@
     }
 }
 
-
-
-@media (max-width: 359px) {
-    .left-panel__info {
-        margin-top: 8rem;
-        padding: 0 18px;
-    }
-
-    .left-panel__name {
-        font-size: 1rem;
-    }
-
-    .left-panel__title {
-        font-size: 0.8rem;
-    }
-
-}
-
-@media (min-width: 360px) and (max-width: 767px) {
-    .left-panel__info {
-        padding-top: 82px;
-    }
-
-    .left-panel__name {
-        font-size: 1.8rem;
-    }
-
-    .left-panel__info h1 {
-        height: 220px;
-    }
-
-
-}
-
-@media (min-width: 1024px) and (max-width: 1279px) {
+@media (min-width: 1025px) and (max-width: 1279px) {
     .left-panel__name {
         margin-top: 5rem;
         font-size: 1.5rem;
@@ -172,9 +232,8 @@
 
 
 
+
 /* Right Panel Styles */
-
-
 .right-panel {
     width: 50%;
     height: 100%;
@@ -213,6 +272,16 @@
     position: relative;
 }
 
+.mobile-scrollable {
+    height: 100vh;
+    overflow-y: auto;
+    /* scroll-snap-type: y mandatory; */
+    scroll-behavior: smooth;
+    z-index: 5;
+    overflow-x: hidden;
+    position: relative;
+}
+
 .empty-div {
     height: 100vh;
     width: 100%;
@@ -240,6 +309,8 @@
         width: 100%;
         position: sticky;
     }
+
+       
 }
 
 
@@ -362,21 +433,21 @@
 }
 
 /* Responsive Styles */
-@media (max-width: 1024px) {
-    .burger-circle {
-        width: 50px;
-        height: 50px;
-        top: 45px;
-        left: 3rem;
+
+@media (min-width:359px) and (max-width:380px) {
+    .burger-menu-item p {
+        font-size: 12px;
     }
-    
-    .burger-icon {
-        width: 30px;
+
+    .burger-menu-item h4 {
+        font-size: 14px;
     }
-    
-    .burger-menu-content {
-        width: 75%;
+
+    .burger-menu-nav {
+        padding-top: 0%;
     }
+
+
 }
 
 @media (max-width: 767px) {
@@ -385,7 +456,37 @@
         left: 20px;
         padding: 20px;
     }
+
+    .burger-menu-nav {
+        padding-top: 15%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 10px;
+        padding-bottom: 10px;
+    }
 }
+
+
+@media (max-width: 1024px) {
+    .burger-circle {
+        width: 50px;
+        height: 50px;
+        top: 45px;
+        left: 3rem;
+    }
+
+    .burger-icon {
+        width: 30px;
+    }
+
+    .burger-menu-content {
+        width: 75%;
+    }
+}
+
+
+
 
 /* Circle Reveal Animation */
 .circle-reveal {
@@ -412,16 +513,15 @@
 }
 
 /* Responsive Styles for Circle Reveal */
-@media (max-width: 359px) {
+@media (min-width: 359px) and (max-width: 390px){
     .circle-reveal {
         width: 6rem;
-        height: 45vh;
     }
 }
 
-@media (min-width: 360px) and (max-width: 767px) {
+@media (min-width: 391px) and (max-width: 767px) {
     .circle-reveal {
-        height: 40vh;
+        height: 32vh;
     }
 }
 
@@ -463,8 +563,6 @@
 }
 
 
-
-
 /* About Section Styles */
 .about-section {
     height: 100vh;
@@ -503,18 +601,6 @@
 
 
 
-/* About Section Animation */
-/* #about-section {
-    opacity: 0;
-    transform: translateY(50px);
-    transition:
-        opacity 0.8s ease-out,
-        transform 0.8s ease-out;
-} */
-
-
-
-
 /* Certifications Section */
 .maxoliv-section {
     padding: 5rem 3rem 4rem;
@@ -529,9 +615,6 @@
     /* scroll-snap-align: start; */
     position: sticky;
     top: 0;
-    /* background-color: #fff; */
-    /* padding: 50px; */
-    /* scroll-margin-top: 2px; */
 }
 
 .maxoliv-section h2 {
@@ -635,20 +718,15 @@
     align-items: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-
-    /* pointer-events: none; */
-    /* Allows clicking through when invisible */
     /* z-index: 3; */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-/* Add these to your existing overlay styles */
+
 .overlay-content {
     padding: 40px;
-    /* max-width: 800px; */
     height: 50%;
     width: 90%;
-    /* text-align: center; */
     /* border: 2px solid red; */
     background: #f9f9f9;
     display: flex;
@@ -766,20 +844,6 @@
 }
 
 
-
-
-/* Testimonials Section */
-/* .maxoliv-section {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-    text-align: center;
-    scroll-snap-align: start;
-} */
 
 .testimonials-container {
     display: flex;
@@ -916,14 +980,6 @@
     object-fit: cover;
 }
 
-/* .testimonial-author {
-    font-weight: bold;
-    text-align: center;
-    margin-top: 10px;
-} */
-
-
-
 
 /* Projects Section */
 
@@ -940,22 +996,7 @@
     /* border: 1px solid white; */
     color: white;
     /* scroll-snap-align: start; */
-    /* scroll-margin-top: 2px; */
-
-    
 }
-
-/* Project Carousel Container */
-/* .projects-carousel-container {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin: 40px 0;
-    align-self: center;
-} */
 
 /* Carousel Container */
 .projects-carousel-container {
@@ -988,33 +1029,11 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     flex-shrink: 0;
-    /* Prevent cards from shrinking */
-    /* margin: 0 30px; */
-    /* Space between cards */
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: space-around; */
     transition: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-    will-change: transform, opacity;
-    
+    will-change: transform, opacity;   
 }
 
-/* Navigation Buttons */
-/* .project-carousel-nav {
-    background: #0cdcf7;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-    outline-offset: 2px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+
 
 /* Navigation Buttons */
 .project-carousel-nav {
@@ -1412,8 +1431,48 @@
 }
 
 
-@media (max-width:768px){
+
+@media (min-width: 359px) and (max-width: 391px) {
+    .contact-modal-header h3 {
+            width: 50%;
+            font-size: 1rem;
+    }
+
+}
+
+@media (min-width: 392px) and (max-width: 440px) {
     .contact-modal-header {
         padding: 14px 4px 2px;
     }
+
+    .contact-modal-header h3 {
+        width: 50%;
+    }
 }
+
+@media (max-width:768px) {
+    .contact-circle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .contact-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+
+
+@keyframes loading-line {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-loading-line {
+    animation: loading-line 1.5s infinite ease-in-out; }

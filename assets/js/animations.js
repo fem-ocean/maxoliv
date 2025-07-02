@@ -36,5 +36,5 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingOverlay.style.display = 'none';
       }, 2000);
     }, 800); // This starts at 3.6s (1s delay + 2.5s growth + 0.1s buffer)
-  }, 2500); // Small delay to ensure DOM is ready. ##########Dont know how this would be modified in production
+  }, 2500); // Small delay to ensure DOM is ready. #Dont know how this would be modified in production
 });

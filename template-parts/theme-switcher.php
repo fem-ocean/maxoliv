@@ -10,10 +10,10 @@ if (!defined('ABSPATH')) {
 
 // Get theme colors from Customizer with defaults
 $theme_colors = array(
+    'dark'  => get_theme_mod('theme_switcher_dark_color', '#0A090C'),
     'pink' => get_theme_mod('theme_switcher_pink_color', '#fd8e8e'),
     'yellow'  => get_theme_mod('theme_switcher_yellow_color', '#fde58e'),
     'green'  => get_theme_mod('theme_switcher_green_color', '#8efdb0'),
-    'dark'  => get_theme_mod('theme_switcher_dark_color', '#0A090C')
 );
 ?>
 

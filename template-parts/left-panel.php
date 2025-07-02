@@ -34,13 +34,15 @@ if (!defined('ABSPATH')) {
         <p class="left-panel__title">
             <?php echo wp_kses_post(get_theme_mod('left_panel_description', __('I bridge the gap between business needs and digital solutions—managing projects end to end, gathering precise requirements, and building products that users love.', 'maxolivtextdomain'))); ?>
         </p>
+
+        <a href="#contact-section" class="left-panel__button">
+            <?php echo esc_html(get_theme_mod('left_panel_button_text', __('Let\'s Work Together!', 'maxolivtextdomain'))); ?>
+        </a>
     </div>
     
 
     
-    <a href="#contact-section" class="left-panel__button">
-        <?php echo esc_html(get_theme_mod('left_panel_button_text', __('Let\'s Work Together!', 'maxolivtextdomain'))); ?>
-    </a>
+    
     
     <div class="left-panel__">
         <p class="left-panel__social-text">

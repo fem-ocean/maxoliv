@@ -30,7 +30,7 @@ if (!defined('ABSPATH')) {
                     
                     foreach ($menu_sections as $section) : 
                         $title = get_theme_mod('menu_item_' . $section . '_title', ucfirst($section));
-                        $desc = get_theme_mod('menu_item_' . $section . '_desc', '');
+                        $desc = get_theme_mod('menu_item_' . $section . '_desc', ucfirst($section));
                     ?>
                         <div class="burger-menu-item" data-section="<?php echo esc_attr($section); ?>">
                             <h4><?php echo esc_html($title); ?></h4>

@@ -133,7 +133,6 @@ if (WP_DEBUG) {
 
 
 
-
 // Add to your existing customizer function
 function maxoliv_burger_menu_customize_register($wp_customize) {
     // Burger Menu Section
@@ -244,13 +243,34 @@ add_action('wp_enqueue_scripts', 'maxoliv_enqueue_burger_menu_js');
 
 /**
  * Add Theme Switcher Customizer Settings
- */// Add to your existing customizer function
+ */
+
 function maxoliv_theme_switcher_customize_register($wp_customize) {
     // Theme Switcher Section
     $wp_customize->add_section('maxoliv_theme_switcher', array(
         'title'    => __('Theme Switcher', 'maxoliv'),
         'priority' => 45,
     ));
+
+
+
+    // Dark Theme Color
+    $wp_customize->add_setting('theme_switcher_dark_color', array(
+        'default'           => '#0A090C',
+        'sanitize_callback' => 'sanitize_hex_color',
+        'transport'         => 'postMessage'
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Color_Control(
+        $wp_customize,
+        'theme_switcher_dark_color_control',
+        array(
+            'label'    => __('Dark Theme Color', 'maxoliv'),
+            'section'  => 'maxoliv_theme_switcher',
+            'settings' => 'theme_switcher_dark_color'
+        )
+    ));
+
     
     // Pink Theme Color
     $wp_customize->add_setting('theme_switcher_pink_color', array(
@@ -303,31 +323,16 @@ function maxoliv_theme_switcher_customize_register($wp_customize) {
         )
     ));
 
-    // Dark Theme Color
-    $wp_customize->add_setting('theme_switcher_dark_color', array(
-        'default'           => '#0A090C',
-        'sanitize_callback' => 'sanitize_hex_color',
-        'transport'         => 'postMessage'
-    ));
     
-    $wp_customize->add_control(new WP_Customize_Color_Control(
-        $wp_customize,
-        'theme_switcher_dark_color_control',
-        array(
-            'label'    => __('Dark Theme Color', 'maxoliv'),
-            'section'  => 'maxoliv_theme_switcher',
-            'settings' => 'theme_switcher_dark_color'
-        )
-    ));
     
     // Selective Refresh
     $wp_customize->selective_refresh->add_partial('theme_switcher_partial', array(
         'selector'        => '.theme-switcher',
         'settings'        => array(
+            'theme_switcher_dark_color',
             'theme_switcher_pink_color',
             'theme_switcher_yellow_color',
-            'theme_switcher_green_color',
-            'theme_switcher_dark_color'
+            'theme_switcher_green_color'
         ),
         'render_callback' => function() {
             ob_start();
@@ -358,14 +363,11 @@ add_action('wp_enqueue_scripts', 'maxoliv_enqueue_theme_switcher_js');
 
 // Add theme class to body
 function maxoliv_body_class_theme($classes) {
-    $current_theme = !empty($_COOKIE['maxoliv-theme']) ? sanitize_text_field($_COOKIE['maxoliv-theme']) : 'light';
+    $current_theme = !empty($_COOKIE['maxoliv-theme']) ? sanitize_text_field($_COOKIE['maxoliv-theme']) : 'dark';
     $classes[] = 'theme-' . $current_theme;
     return $classes;
 }
 add_filter('body_class', 'maxoliv_body_class_theme');
-
-
-
 
 
 
@@ -632,21 +634,6 @@ add_action('customize_register', 'maxoliv_right_panel_customize_register');
 function maxoliv_sanitize_checkbox($input) {
     return (isset($input) && true === $input) ? true : false;
 }
-
-// ********************Check here array(jquery)
-// Enqueue right panel JS
-// function maxoliv_right_panel_scripts() {
-//     wp_enqueue_script(
-//         'maxoliv-right-panel',
-//         get_template_directory_uri() . '/assets/js/right-panel.js',
-//         array('jquery'),
-//         filemtime(get_template_directory() . '/assets/js/right-panel.js'),
-//         true
-//     );
-// }
-// add_action('wp_enqueue_scripts', 'maxoliv_right_panel_scripts');
-
-
 
 
 
@@ -948,13 +935,7 @@ function maxoliv_testimonials_customizer($wp_customize) {
         'sanitize_callback' => 'maxoliv_sanitize_testimonials'
     ]);
     
-    // $wp_customize->add_control('maxoliv_testimonials_items_control', [
-    //     'label'       => __('Testimonials', 'maxoliv'),
-    //     'description' => __('Add testimonials in JSON format', 'maxoliv'),
-    //     'section'     => 'maxoliv_testimonials',
-    //     'settings'    => 'maxoliv_testimonials_items',
-    //     'type'        => 'textarea'
-    // ]);
+
 
     $wp_customize->add_control(new Maxoliv_Testimonials_Control(
         $wp_customize,
@@ -1078,8 +1059,6 @@ function maxoliv_sanitize_testimonials($input) {
         
     return wp_slash(json_encode($sanitized)); // Properly slash for DB storage
         
-   
-    
 }
 
 
@@ -1174,8 +1153,6 @@ function maxoliv_get_testimonials() {
     return array_filter($decoded, function($testimonial) {
         return !empty($testimonial['text']) && !empty($testimonial['author']) && !empty($testimonial['image']);
     });
-    
-
 }
 
 
@@ -1273,7 +1250,7 @@ function maxoliv_enqueue_typewriter_script() {
         true
     );
 
-    // Your custom JS (we’ll create it in Step 3)
+    // Your custom JS
     wp_enqueue_script(
         'maxoliv-typewriter-init',
         get_template_directory_uri() . '/assets/js/typewriter-init.js',
@@ -1496,3 +1473,43 @@ add_action('wp_ajax_nopriv_contact_form_submit', 'maxoliv_handle_contact_form');
 
 
 
+
+// ****programatically prompt users to intall a recommended plugin*****
+
+include_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+
+
+
+// *********************Admin Bar***********************************
+// Fix passive event listener violation for admin-bar
+function fix_admin_bar_passive_events() {
+    if (is_admin_bar_showing()) {
+        wp_add_inline_script(
+            'admin-bar',
+            'document.addEventListener("DOMContentLoaded", function() {
+                try {
+                    jQuery(document).on("touchstart", function(e) {
+                        if (e.target.closest("#wpadminbar")) {
+                            e.preventDefault();
+                        }
+                    }, { passive: false });
+                } catch(e) {}
+            });'
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'fix_admin_bar_passive_events', 100);
+
+
+
+// Disable admin bar for all users except admins
+// add_action('after_setup_theme', 'remove_admin_bar');
+// function remove_admin_bar() {
+//     if (!current_user_can('administrator')) {
+//         show_admin_bar(false);
+//     }
+// }
+
+
+// Completely disable admin bar
+add_filter('show_admin_bar', '__return_false');
