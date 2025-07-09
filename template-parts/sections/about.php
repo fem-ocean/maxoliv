@@ -15,7 +15,7 @@ $technical_text = get_theme_mod('about_technical_text', __('I wear many hats:<br
 $personal_text = get_theme_mod('about_personal_text', __('Outside of work, I\'m a family-first person...', 'maxoliv'));
 ?>
 
-<section class="about-section" id="about-section">
+<section class="h-screen w-full flex flex-col items-center content-center text-justify bg-white py-[80px] px-[20px] sticky top-0" id="about-section">
     <div class="about-me-text">
         <h2><?php echo esc_html($about_title); ?></h2>
         <br />

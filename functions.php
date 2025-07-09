@@ -43,31 +43,31 @@ function maxoliv_assets() {
     $theme_version = wp_get_theme()->get('Version');
     
     // Main stylesheet
-    wp_enqueue_style(
-        'maxoliv-style',
-        get_stylesheet_uri(),
-        array(),
-        $theme_version
-    );
+    // wp_enqueue_style(
+    //     'maxoliv-style',
+    //     get_stylesheet_uri(),
+    //     array(),
+    //     $theme_version
+    // );
     
     // Custom CSS
-    $custom_css_path = '/assets/css/main.css';
-    if (file_exists(get_template_directory() . $custom_css_path)) {
-        wp_enqueue_style(
-            'maxoliv-main-style',
-            get_template_directory_uri() . $custom_css_path,
-            array('maxoliv-style'),
-            filemtime(get_template_directory() . $custom_css_path)
-        );
-    }
+    // $custom_css_path = '/assets/css/main.css';
+    // if (file_exists(get_template_directory() . $custom_css_path)) {
+    //     wp_enqueue_style(
+    //         'maxoliv-main-style',
+    //         get_template_directory_uri() . $custom_css_path,
+    //         array('maxoliv-style'),
+    //         filemtime(get_template_directory() . $custom_css_path)
+    //     );
+    // }
     
     // Google Fonts
-    wp_enqueue_style(
-        'maxoliv-poppins-font',
-        'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
-        array(),
-        null
-    );
+    // wp_enqueue_style(
+    //     'maxoliv-poppins-font',
+    //     'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
+    //     array(),
+    //     null
+    // );
     
     // Main JavaScript
     wp_enqueue_script(
@@ -1513,3 +1513,36 @@ add_action('wp_enqueue_scripts', 'fix_admin_bar_passive_events', 100);
 
 // Completely disable admin bar
 add_filter('show_admin_bar', '__return_false');
+
+
+
+
+
+
+/************Integrating Tailwind CSS **********/
+function enqueue_tailwind() {
+    wp_enqueue_style('tailwind', get_stylesheet_directory_uri() . '/style.css');
+}
+add_action('wp_enqueue_scripts', 'enqueue_tailwind');
+
+
+
+add_action('wp_head', function() {
+    $body_bg = get_theme_mod('body_bg_color', '#f9fafb');
+    echo <<<HTML
+    <style>
+        :root {
+            --body-bg: $body_bg;
+            --theme-text-color: '#ffffff';
+            --theme-border-color: 'rgb(253, 142, 142)';
+            --theme-transparent-overlay: 'rgba(253, 142, 142, 0.3)';
+            --theme-certBtnHover-dark: '#fc4a4a';
+            --theme-secondary: '#0a0a0a';
+        }
+        body {
+            background-color: var(--body-bg);
+            overflow: hidden;
+        }
+    </style>
+    HTML;
+});

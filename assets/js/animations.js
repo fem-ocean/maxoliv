@@ -1,40 +1,46 @@
+/**
+ * Loading animation handler for Maxoliv theme
+ * @package Maxoliv
+ */
+
 // About section animation
-document.addEventListener("DOMContentLoaded", function () {
-  const aboutSection = document.getElementById("about-section");
+// document.addEventListener("DOMContentLoaded", function () {
+//   const aboutSection = document.getElementById("about-section");
 
-  if (aboutSection) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            aboutSection.style.opacity = "1";
-            aboutSection.style.transform = "translateY(0)";
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+//   if (aboutSection) {
+//     const observer = new IntersectionObserver(
+//       (entries) => {
+//         entries.forEach((entry) => {
+//           if (entry.isIntersecting) {
+//             aboutSection.style.opacity = "1";
+//             aboutSection.style.transform = "translateY(0)";
+//           }
+//         });
+//       },
+//       { threshold: 0.1 }
+//     );
 
-    observer.observe(aboutSection);
-  }
-});
-
-
+//     observer.observe(aboutSection);
+//   }
+// });
 
 // **************Loading Animation********************
-document.addEventListener('DOMContentLoaded', function() {
-  const loadingOverlay = document.querySelector('.loading-overlay');
-  
-  // Start the animation sequence
-  setTimeout(() => {
-    // After line animation completes (3.6s total)
+
+// Loading Animation - Production Ready
+document.addEventListener("DOMContentLoaded", () => {
+  const loadingOverlay = document.querySelector(".loading-overlay");
+  if (!loadingOverlay) return;
+
+  // Animation sequence (total duration: ~3.6s)
+  const startTime = Date.now();
+
+  const animationSequence = () => {
+    loadingOverlay.classList.add('animate-out');
     setTimeout(() => {
-      loadingOverlay.classList.add('animate-out');
-      
-      // Remove overlay after animation completes
-      setTimeout(() => {
-        loadingOverlay.style.display = 'none';
-      }, 2000);
-    }, 800); // This starts at 3.6s (1s delay + 2.5s growth + 0.1s buffer)
-  }, 2500); // Small delay to ensure DOM is ready. #Dont know how this would be modified in production
+      loadingOverlay.remove(); // Better than display: none
+    }, 800); // Matches reveal animation duration
+  };
+
+  setTimeout(animationSequence, 3600); // 1s appear + 2.5s grow + 0.1s buffer
 });
+ 
