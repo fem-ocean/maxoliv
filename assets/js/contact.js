@@ -34,24 +34,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Open modal function
   function openModal(data) {
     const modalHTML = `
-            <div class="contact-modal-overlay">
-                <div class="contact-modal">
-                    <div class="contact-modal-close">
+            <div class="fixed top-0 left-0 right-0 bottom-0 bg-[0,0,0,0.7] flex justify-center items-center z-50 contact-modal-overlay">
+                <div class="contact-modal bg-[#ebebeb] rounded-3 w-[90%] max-w-[600px] max-h-[85vh] relative overflow-hidden">
+                    <div class="contact-modal-close absolute top-[40px] right-[50px] flex justify-center align-center cursor-pointer rounded-[5px] text-[20px] text-secondary shadow-lg w-[10px] h-[10px] z-[15px] transition-[background-color] duration-300 ease-in-out">
                       <img src="${maxoliv_vars.closeButton}" alt="Close" style="width: 30px" />
                     </div>
-                    <div class="contact-modal-content">
-                        <div class="contact-modal-header">
+                    <div class="contact-modal-content overflow-y-auto max-h-[70vh]">
+                        <div class="contact-modal-header flex align-center gap-5 mb-10 sticky top-0 bg-[#ebebeb] z-[10px] p-[20px] border-b-2 border-[#cccccc]">
                             <div class="contact-circle" style="background-color: ${data.color}">
                                 <img src="${data.icon}" alt="${data.title}" class="contact-icon">
                             </div>
                             <h3 style="color: #2e304b">${data.title}</h3>
                         </div>
                         
-                        <form id="contact-form" class="contact-form">
+                        <form id="contact-form" class="contact-form p-[2rem] min-h-[80vh]">
                             <input type="hidden" name="contact_type" value="${data.title}">
                             
-                            <div class="contact-form-group">
-                                <label for="contact-name" class="contact-form-label">Name</label>
+                            <div class="contact-form-group mb-[1.2rem]">
+                                <label for="contact-name" class="contact-form-label block mb-[0.5rem] text-secondary">Name</label>
                                 <input type="text" id="contact-name" name="name" class="contact-form-input" placeholder="Alex Jones" required>
                             </div>
                             
