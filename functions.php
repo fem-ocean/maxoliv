@@ -1529,19 +1529,20 @@ add_action('wp_enqueue_scripts', 'enqueue_tailwind');
 
 add_action('wp_head', function() {
     $body_bg = get_theme_mod('body_bg_color', '#f9fafb');
+    $overlay = get_theme_mod('overlay_color', 'rgba(0, 0, 0, 0.3)');
     echo <<<HTML
     <style>
         :root {
             --body-bg: $body_bg;
-            --theme-text-color: '#ffffff';
-            --theme-border-color: 'rgb(253, 142, 142)';
-            --theme-transparent-overlay: 'rgba(253, 142, 142, 0.3)';
-            --theme-certBtnHover-dark: '#fc4a4a';
-            --theme-secondary: '#0a0a0a';
+            --theme-text: #2e304b;
+            --theme-border-color: rgb(253,142,142);
+            --theme-transparent-overlay: {$overlay};
+            --theme-primary: #0a090c;
         }
         body {
-            background-color: var(--body-bg);
+            /* background-color: var(--body-bg); */
             overflow: hidden;
+            color: var(--theme-text);
         }
     </style>
     HTML;

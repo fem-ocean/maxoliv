@@ -15,16 +15,16 @@ $technical_text = get_theme_mod('about_technical_text', __('I wear many hats:<br
 $personal_text = get_theme_mod('about_personal_text', __('Outside of work, I\'m a family-first person...', 'maxoliv'));
 ?>
 
-<section class="h-screen w-full flex flex-col items-center content-center text-justify bg-white py-[80px] px-[20px] sticky top-0" id="about-section">
-    <div class="about-me-text">
-        <h2><?php echo esc_html($about_title); ?></h2>
+<section class="h-screen w-full flex flex-col items-center justify-center text-justify bg-white py-[80px] px-[20px] sticky top-0" id="about-section">
+    <div class="w-[85%] h-[max-content] text-[#2e304b]">
+        <h2 class="text-2xl font-bold"><?php echo esc_html($about_title); ?></h2>
         <br />
         <p><?php echo wp_kses_post($intro_text); ?></p>
         <br />
-        <h3><?php esc_html_e('Technical Skills', 'maxoliv'); ?></h3>
+        <h3 class="text-xl font-bold"><?php esc_html_e('Technical Skills', 'maxoliv'); ?></h3>
         <p><?php echo wp_kses_post($technical_text); ?></p>
         <br />
-        <h3><?php esc_html_e('Personal Skills', 'maxoliv'); ?></h3>
+        <h3 class="text-xl font-bold"><?php esc_html_e('Personal Skills', 'maxoliv'); ?></h3>
         <p><?php echo wp_kses_post($personal_text); ?></p>
     </div>
 </section>

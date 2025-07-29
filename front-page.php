@@ -36,8 +36,8 @@ get_header(); // Load header.php
             <?php get_template_part('template-parts/sections/contact'); ?>
         </main>
 
-        <?php else : ?>
-        <!-- Desktop Content -->
+    <?php else : ?>
+    <!-- Desktop Content -->
         
         <!-- Left Panel (Navigation) -->
         <?php get_template_part('template-parts/left-panel'); ?>
@@ -49,7 +49,7 @@ get_header(); // Load header.php
             <!-- Background Layer -->
             <div class="fixed top-0 right-0 w-1/2 h-screen bg-cover bg-center -z-10" 
                 style="background-image: url('<?php echo esc_url(get_theme_mod('right_panel_bg', get_template_directory_uri() . '/assets/images/mypics.png')); ?>')">
-                <div class="absolute w-full h-full" style="background-color: var(--theme-transparent-overlay, <?php echo esc_attr(get_theme_mod('overlay_color', 'rgba(253,142,142,0.3)')); ?>)"></div>
+                <div class="absolute w-full h-full bg-[var(--theme-transparent-overlay)]" ></div>
                 <!-- will come back to this for themes background color -->
             </div>
 

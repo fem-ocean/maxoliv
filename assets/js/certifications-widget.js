@@ -3,21 +3,31 @@ document.addEventListener("DOMContentLoaded", function () {
   const cards = document.querySelectorAll(".certification-card");
   const overlay = document.querySelector(".cert-section-overlay");
   const closeButton = overlay.querySelector(".close-overlay");
+  // console.log(cards, overlay, closeButton);
 
   cards.forEach((card) => {
     card.addEventListener("click", function () {
       const name = this.getAttribute("data-name");
       const description = this.getAttribute("data-description");
       const link = this.getAttribute("data-certification-link");
-      console.log(name, description, link);
+      const logo = this.getAttribute("data-logo");
+
+      // console.log(name, description, link);
 
       // Update overlay content
       overlay.querySelector(".overlay-title").textContent = name;
       overlay.querySelector(".overlay-description").textContent = description;
 
       // Update link
-      const overlayLink = overlay.querySelector(".overlay-link");
+      const overlayLink = overlay.querySelector("#overlay-link");
       overlayLink.href = link;
+
+      // set Background image dynamically
+      const overlayBg = overlay.querySelector(".overlay-bg");
+      overlayBg.style.backgroundImage = `url(${logo})`;
+      overlayBg.style.backgroundSize = "cover";
+      overlayBg.style.backgroundPosition = "center";
+      overlayBg.style.opacity = "0.2";
 
       // Show overlay
       overlay.classList.add("active");
