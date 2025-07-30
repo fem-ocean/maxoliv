@@ -22,10 +22,10 @@ $testimonials = maxoliv_get_local_testimonials();
 $bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
 ?>
 
-<section id="testimonials-section" class="sticky top-0 text-justify justify-center items-start flex-col flex w-full h-screen bg-[#f9f9f9] pt-20 px-12 pb-16" style="background-color: var(--theme-primary, <?php echo esc_attr($bg_color);?>">
-    <div class="flex flex-row w-full max-w-3xl h-3/4 my-0 mx-auto text-center py-10 px-10 text-secondary justify-center items-center">
+<section id="testimonials-section" class="sticky top-0 text-justify justify-center items-start flex-col flex w-full h-screen bg-[#f9f9f9] pt-20 px-12 pb-16" style="/* background-color: var(--theme-primary, <?php echo esc_attr($bg_color);?> */">
+    <div class="flex flex-row w-full max-w-3xl h-[90%] my-0 mx-auto text-center py-[12px] px-[12px] text-secondary justify-center items-center">
         <?php if (!empty($testimonials)) : ?>
-            <div class="h-[90%] testimonials-swiper ">
+            <div class="swiper h-[90%] testimonials-swiper">
                 <div class="swiper-wrapper">
                     <?php foreach ($testimonials as $index => $testimonial) : ?>
                         <div class="swiper-slide">
@@ -60,7 +60,7 @@ $bg_color = get_theme_mod('testimonials_bg_color', '#fd8e8e');
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <div class="absolute bottom-2 left-[10%] -translate-x-[50%] flex flex-row items-center justify-center "></div>
+                <div class="swiper-pagination"></div>
             </div>
         <?php else : ?>
             <p class="no-testimonials"><?php esc_html_e('No testimonials found.', 'maxoliv'); ?></p>

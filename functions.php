@@ -1544,6 +1544,98 @@ add_action('wp_head', function() {
             overflow: hidden;
             color: var(--theme-text);
         }
+        /* Swiper Styles */
+        .swiper-pagination {
+            /* position: absolute; */
+            /* bottom: 5px; */
+            /* left: 10%; */
+            /* transform: translateX(-50%); */
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background-color: var(--theme-primary, #ffffff) !important;
+            opacity: 0.5;
+            transition: opacity 0.3s ease-in-out;
+            margin: 0 10px;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+        }
+
+        .swiper {
+            height: 90%;
+        }
+
+        /* Swiper styles - Customizer */
+        .maxoliv-testimonials-repeater .testimonial-item {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            position: relative;
+        }
+
+        .maxoliv-testimonials-repeater textarea {
+            width: 100%;
+            min-height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .maxoliv-testimonials-repeater .testimonial-image-upload {
+            margin: 10px 0;
+        }
+
+        .maxoliv-testimonials-repeater .image-preview {
+            margin-bottom: 10px;
+        }
+
+        .maxoliv-testimonials-repeater .button-remove {
+            margin-top: 10px;
+            background: #dc3232;
+            color: white;
+            border-color: #dc3232;
+        }
+
+        .maxoliv-testimonials-repeater [data-repeater-create] {
+            margin-top: 15px;
+        }
+
+
+
+        .testimonial-item.has-error textarea,
+        .testimonial-item.has-error input[type="text"] {
+            background-color: #ffebeb;
+        }
+
+
+
+        .testimonial-error-message {
+            margin-top: 10px;
+            padding: 10px;
+            background: #fff0f0;
+            border-left: 3px solid #dc3232;
+        }
+
+
+        /* Error states */
+        .testimonial-item.has-error {
+            border-left: 3px solid #dc3232;
+            background-color: #fff0f0;
+            margin-bottom: 15px;
+            padding-left: 10px;
+        }
+
+        /* Customizer notification styling */
+        .customize-control-notifications-container {
+            margin: 10px 0;
+        }
     </style>
     HTML;
 });

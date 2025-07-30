@@ -24,7 +24,7 @@ $colors = array('#2e0014', '#7b2cbf', '#0e1c36', '#002626', '#6369d1', '#30343f'
 
 <section class="sticky top-0 pt-20 pb-12 px-16 overflow-hidden bg-[#131217] h-screen flex flex-col justify-evenly text-white">
   <div>
-    <h1>My Projects</h1>
+    <h1 class="text-2xl">My Projects</h1>
     <P>Here are some of my works...</P>
   </div>
 
