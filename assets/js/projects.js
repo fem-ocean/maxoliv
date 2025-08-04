@@ -19,11 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Hide all cards except the current one
   function updateCarousel() {
     cards.forEach((card, i) => {
-      card.style.animation = "slideOut 0.3s ease-out forwards";
+      // card.style.animation = "slide-out";
+      card.classList.remove("animate-slide-in", "animate-slide-out")
+      card.classList.add("animate-slide-out");
       setTimeout(() => {
         card.style.display = i === currentIndex ? "block" : "none";
         card.style.margin = "0 auto"; // Center the card
-        card.style.animation = "slideIn 0.4s ease-out forwards"; // Add animation for entry
+        // card.style.animation = "slide-in"; // Add animation for entry
+        card.classList.replace("animate-slide-out", "animate-slide-in")
       
         let bgColor = cardColors[currentIndex];
         if (bgColor.startsWith("rgb(")) {

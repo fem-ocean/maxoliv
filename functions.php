@@ -1544,6 +1544,8 @@ add_action('wp_head', function() {
             overflow: hidden;
             color: var(--theme-text);
         }
+        
+        
         /* Swiper Styles */
         .swiper-pagination {
             /* position: absolute; */

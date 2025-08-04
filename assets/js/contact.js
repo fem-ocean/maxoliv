@@ -34,49 +34,49 @@ document.addEventListener("DOMContentLoaded", function () {
   // Open modal function
   function openModal(data) {
     const modalHTML = `
-            <div class="fixed top-0 left-0 right-0 bottom-0 bg-[0,0,0,0.7] flex justify-center items-center z-50 contact-modal-overlay">
+            <div class="fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.7)] flex justify-center items-center z-50 contact-modal-overlay">
                 <div class="contact-modal bg-[#ebebeb] rounded-3 w-[90%] max-w-[600px] max-h-[85vh] relative overflow-hidden">
-                    <div class="contact-modal-close absolute top-[40px] right-[50px] flex justify-center align-center cursor-pointer rounded-[5px] text-[20px] text-secondary shadow-lg w-[10px] h-[10px] z-[15px] transition-[background-color] duration-300 ease-in-out">
-                      <img src="${maxoliv_vars.closeButton}" alt="Close" style="width: 30px" />
+                    <div class="contact-modal-close absolute top-[40px] right-[50px] flex justify-center items-center cursor-pointer rounded-[5px] text-[20px] text-secondary shadow-lg w-[30px] h-[30px] z-[15] transition-[background-color] duration-300 ease-in-out">
+                      <img src="${maxoliv_vars.closeButton}" alt="Close" />
                     </div>
                     <div class="contact-modal-content overflow-y-auto max-h-[70vh]">
-                        <div class="contact-modal-header flex align-center gap-5 mb-10 sticky top-0 bg-[#ebebeb] z-[10px] p-[20px] border-b-2 border-[#cccccc]">
-                            <div class="contact-circle" style="background-color: ${data.color}">
-                                <img src="${data.icon}" alt="${data.title}" class="contact-icon">
+                        <div class="contact-modal-header flex items-center gap-5 mb-2 sticky top-0 bg-[#ebebeb] z-[10] p-[20px] border-b-2 border-[#cccccc]">
+                            <div class="contact-circle w-[60px] h-[60px] rounded-[50%] flex justify-center items-center flex-shrink-0" style="background-color: ${data.color}">
+                                <img src="${data.icon}" alt="${data.title}" class="w-10 h-10">
                             </div>
-                            <h3 style="color: #2e304b">${data.title}</h3>
+                            <h3 class="text-[18px] font-bold" style="color: #2e304b">${data.title}</h3>
                         </div>
                         
-                        <form id="contact-form" class="contact-form p-[2rem] min-h-[80vh]">
+                        <form id="contact-form" class="contact-form p-[2rem] min-h-[80vh] pb-28">
                             <input type="hidden" name="contact_type" value="${data.title}">
                             
                             <div class="contact-form-group mb-[1.2rem]">
                                 <label for="contact-name" class="contact-form-label block mb-[0.5rem] text-secondary">Name</label>
-                                <input type="text" id="contact-name" name="name" class="contact-form-input" placeholder="Alex Jones" required>
+                                <input type="text" id="contact-name" name="name" class="contact-form-input w-full p-3 bg-[#f7f7f7] border-none rounded text-secondary" placeholder="Alex Jones" required>
                             </div>
                             
-                            <div class="contact-form-group">
-                                <label for="contact-email" class="contact-form-label">Email</label>
-                                <input type="email" id="contact-email" name="email" class="contact-form-input" placeholder="hello@example.com" required>
+                            <div class="contact-form-group mb-[1.2rem]">
+                                <label for="contact-email" class="contact-form-label block mb-[0.5rem] text-secondary">Email</label>
+                                <input type="email" id="contact-email" name="email" class="contact-form-input w-full p-3 bg-[#f7f7f7] border-none rounded text-secondary" placeholder="hello@example.com" required>
                             </div>
                             
-                            <div class="contact-form-group">
-                                <label for="contact-company" class="contact-form-label">Company</label>
-                                <input type="text" id="contact-company" name="company" class="contact-form-input" placeholder="Google Inc">
+                            <div class="contact-form-group mb-[1.2rem]">
+                                <label for="contact-company" class="contact-form-label block mb-[0.5rem] text-secondary">Company</label>
+                                <input type="text" id="contact-company" name="company" class="contact-form-input w-full p-3 bg-[#f7f7f7] border-none rounded text-secondary" placeholder="Google Inc">
                             </div>
                             
-                            <div class="contact-form-group">
-                                <label for="contact-message" class="contact-form-label">Message</label>
-                                <textarea id="contact-message" name="message" class="contact-form-textarea" placeholder="I heard you are the best in this field..." required></textarea>
+                            <div class="contact-form-group mb-[1.2rem]">
+                                <label for="contact-message" class="contact-form-label block mb-[0.5rem] text-secondary">Message</label>
+                                <textarea id="contact-message" name="message" class="contact-form-textarea w-full p-3 bg-[#f7f7f7] border-none rounded text-secondary min-h-[120px] resize-y" placeholder="I heard you are the best in this field..." required></textarea>
                             </div>
                             
-                            <div class="contact-form-checkbox">
+                            <div class="contact-form-checkbox flex items-center gap-2 mt-4">
                                 <input type="checkbox" id="contact-agreement" name="agreement" required>
                                 <label for="contact-agreement" style="color: #2e304b">I agree to be a nice and kind person😊</label>
                             </div>
                             
-                            <div class="contact-form-submit-container">
-                              <button type="submit" class="contact-form-submit">Send Message</button>
+                            <div class="contact-form-submit-container w-full h-fit py-[10px] px-0 absolute bottom-0 left-0 bg-[#ebebeb] border-t-2 border-[#cccccc] flex justify-center items-center">
+                              <button type="submit" class="contact-form-submit mt-[20px] py-[10px] px-[20px] text-sm font-bold text-[#fff] bg-[#0a090c] border-[3px] border-solid border-[#fff] rounded cursor-pointer transition-all duration-[300] ease-in">Send Message</button>
                             </div>
                             
                         </form>

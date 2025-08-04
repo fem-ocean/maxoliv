@@ -16,6 +16,8 @@ module.exports = {
         "loading-line":
           "loading-grow 2.5s cubic-bezier(0.3,0.7,0.4,0.9) forwards",
         "fade-in-down": "fadeInDown 0.5s ease",
+        "slide-out": "slideOut 0.3s ease-out forwards",
+        "slide-in": "slideIn 0.4s ease-out forwards",
       },
       keyframes: {
         "loading-grow": {
@@ -28,7 +30,7 @@ module.exports = {
         },
         "slideIn": {
           "0%": {opacity: "0", transform: "translateX(50px)"},
-          "70%": {opacity: "0.8", transform: "translateX(-10px)"},
+          "70%": {opacity: "1", transform: "translateX(-10px)"},
           "100%": {opacity: "1", transform: "translateX(0)"},
         },
         "slideOut": {
