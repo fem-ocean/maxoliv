@@ -6,13 +6,41 @@
  * Left panel template part
  *
  * @package Maxoliv
+ * @since 1.0.0
  */
+
+
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 ?>
 
 
 
-<div class="relative left-0 top-0 w-1/2 h-full bg-[var(--theme-secondary)] flex flex-col items-center justify-between text-center p-[50px_30px] gap-5 border-2 border-yellow">
-  <div class="panel-inner w-full">
+
+<div class="w-1/2 h-full bg-[var(--theme-primary)] flex flex-col items-center justify-between text-center p-[50px_30px] gap-5">
+
+  <?php do_action('maxoliv_before_left_panel_content'); ?>
+
+  <!-- Burger Menu will go here -->
+  <?php get_template_part('template-parts/burger-menu'); ?>
+  
+  <div class="left-panel__info flex flex-col h-3/5 text-[var(--theme-text-leftPanel)]">
+
+    <h1 class="left-panel__name font-bold mb-[15px] text-3xl">
+      <?php echo wp_kses_post(get_theme_mod('left_panel_greeting', __('Hello. I\'m Olufemi Oshin.', 'maxolivtextdomain'))); ?>
+      <br>
+      <span class="typewriter-container text-4xl">I am <span id="typewriter-text"></span></span>
+    </h1>
+
+    <p class="left-panel__title text-xl mt-[30px]">
+      <?php echo wp_kses_post(get_theme_mod('left_panel_description', __('I bridge the gap between business needs and digital solutions—managing projects end to end, gathering precise requirements, and building products that users love.', 'maxolivtextdomain'))); ?>
+    </p>
+
+    <a href="#contact-section" class="left-panel__button p-[15px_30px] text-lg font-[400] text-[var(--theme-text-leftPanel)] border-2 border-[var(--theme-text-leftPanel)] rounded-[50%] ">
+      <?php echo esc_html(get_theme_mod('left_panel_button_text', __('Let\'s Work Together!', 'maxolivtextdomain'))); ?>
+    </a>
+
     <!-- Logo -->
     <div class="logo mb-12 flex justify-center">
       <?php

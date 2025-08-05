@@ -1536,8 +1536,10 @@ add_action('wp_head', function() {
             --body-bg: $body_bg;
             --theme-text: #2e304b;
             --theme-border-color: rgb(253,142,142);
-            --theme-transparent-overlay: {$overlay};
             --theme-primary: #0a090c;
+            --theme-text-leftPanel: #fff;
+            --theme-transparent-overlay: {$overlay};
+            
         }
         body {
             /* background-color: var(--body-bg); */
