@@ -17,9 +17,9 @@ $theme_colors = array(
 );
 ?>
 
-<div class="theme-switcher">
+<div class="theme-switcher flex items-center gap-4 mt-auto">
     <?php foreach ($theme_colors as $theme => $color) : ?>
-        <button class="theme-dot" 
+        <button class="theme-dot w-4 h-4 rounded-[50%] border-none cursor-pointer opacity-95 transition-colors duration-700 p-0 appearance-none hover:scale-[(1.2)] focus:outline-2 focus:outline-[var(--theme-currentColor)] focus:outline-offset-2"
                 data-theme="<?php echo esc_attr($theme); ?>" 
                 style="background-color: <?php echo esc_attr($color); ?>"
                 aria-label="<?php printf(esc_attr__('Switch to %s theme', 'maxoliv'), $theme); ?>">
