@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
     </button>
 
     <div class="burger-menu-overlay fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.5)] opacity-0 pointer-events-none transition-opacity duration-300 z-[1000] group [&.active]:opacity-100 [&:.active]:pointer-events-auto">
-        <div class="circle-reveal fixed top-[10px] left-[22px] w-40 mt-[50px] h-[45vh] rounded-[5%] origin-center z-[999] bg-[rgb(241,241,241)] scale-0 opacity-0 transition-transform duration-600 group-[.active]:scale-300 group-[.active]:opacity-100" id="circle-reveal"></div>
+        <div class="circle-reveal fixed top-[10px] left-[22px] w-[150px] mt-[50px] h-[35vh] rounded-[5%] origin-left z-[999] bg-[rgb(241,241,241)] scale-0 opacity-0 transition-transform duration-[600ms] group-[.active]:scale-3 group-[.active]:opacity-100" id="circle-reveal"></div>
         
         <div class="burger-menu-modal relative w-full h-full" id="burger-menu-modal">
             <div class="burger-menu-content absolute top-6 left-[40px] w-[25%] p-10 text-[var(--theme-text)] z-[1005] flex flex-col justify-between">

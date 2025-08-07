@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 
 
 
-<div class="w-1/2 h-full bg-[var(--theme-primary)] flex flex-col items-center justify-between text-center p-[50px_30px] gap-5">
+<div class="w-1/2 h-[100vh] bg-[var(--theme-primary)] flex flex-col items-center justify-between text-center p-[50px_30px] gap-5">
 
   <?php do_action('maxoliv_before_left_panel_content'); ?>
 

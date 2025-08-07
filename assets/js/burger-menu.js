@@ -44,6 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
       if (e.key === "Escape" && burgerMenu.classList.contains("active")) {
         burgerToggle.setAttribute("aria-expanded", "false");
         burgerMenu.classList.remove("active");
+        // Wait for transition to finish before hiding
+        setTimeout(() => {
+          burgerMenu.style.display = "none";
+        }, 700); // match duration-[600ms]
         document.body.style.overflow = "";
 
         // Reset circle reveal
