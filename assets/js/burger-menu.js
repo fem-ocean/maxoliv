@@ -14,8 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Animate circle reveal
       if (!isExpanded) {
+        //set initial state
         circleReveal.style.transform = "scale(0)";
         circleReveal.style.opacity = "0";
+        //force reflow
+        void circleReveal.offsetHeight;
+        //Now trigger transition
         setTimeout(() => {
           circleReveal.style.transform = "scale(3)";
           circleReveal.style.opacity = "1";

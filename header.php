@@ -6,7 +6,7 @@
     <?php wp_head(); ?> <!-- Keep this - Tailwind will be enqueued via functions.php -->
     
     <!-- Loading animation markup -->
-    <div class="loading-overlay">
+    <div class="loading-overlay bg-dark">
         <div class="loading-line"></div>
     </div>
 </head>

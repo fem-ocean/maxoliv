@@ -620,7 +620,7 @@ video {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background-color: #0a090c;
+  background-color: #2e304b;
 }
 
 .loading-line {
@@ -1476,6 +1476,11 @@ video {
 
 .bg-\[var\(--theme-transparent-overlay\)\] {
   background-color: var(--theme-transparent-overlay);
+}
+
+.bg-dark {
+  --tw-bg-opacity: 1;
+  background-color: rgb(10 9 12 / var(--tw-bg-opacity, 1));
 }
 
 .bg-transparent {
